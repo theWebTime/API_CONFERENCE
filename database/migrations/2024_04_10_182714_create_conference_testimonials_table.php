@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('conference_testimonials', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('conferences_id');
+            $table->foreign('conferences_id')->references('id')->on('conferences');
             $table->string('image', 300);
             $table->string('name', 20);
             $table->string('designation', 20);

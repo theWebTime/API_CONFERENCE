@@ -12,10 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('conference_important_dates', function (Blueprint $table) {
-            //i have to discuss with client
             $table->id();
             $table->unsignedBigInteger('conferences_id');
             $table->foreign('conferences_id')->references('id')->on('conferences');
+            $table->integer('category'); //(1.Conference Dates 2.Abstract Deadline 3.Registrations Deadline)
+            $table->string('title', 20);
+            $table->string('date', 20);
             $table->timestamps();
         });
     }

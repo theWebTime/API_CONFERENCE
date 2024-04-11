@@ -25,7 +25,15 @@ Route::group(['middleware' => ['auth:api', 'checkRole:admin']],  function () {
 Route::group(['middleware' => ['auth:api', 'checkRole:conferenceOwner']],  function () {
 
 
-});Route::group(['middleware' => ['auth:api', 'checkRole:admin,conferenceOwner']],  function () {
+});
+Route::group(['middleware' => ['auth:api', 'checkRole:admin,conferenceOwner']],  function () {
 
 
+});
+
+Route::group(['middleware' => ['auth:api']],  function () {
+    Route::post('logout', [AuthController::class, 'logout']);
+    // Profile Routes
+    Route::get('/profile', [AuthController::class, 'profile']);
+    Route::post('/profile_update', [AuthController::class, 'profile_update']);
 });

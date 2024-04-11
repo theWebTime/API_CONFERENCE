@@ -16,6 +16,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('conferences_id');
             $table->foreign('conferences_id')->references('id')->on('conferences');
+            $table->text('venue_description');
+            $table->text('guidelines_description');
+            $table->string('brochures', 300);
             $table->timestamps();
         });
     }

@@ -1,0 +1,4 @@
+in the confrence first take all the data from request params
+and in there there was email address so simply create one user with email address and it will be confrenceowner role and password would be Admin@123.
+
+and after that from that take user id and manage it in confrence table.

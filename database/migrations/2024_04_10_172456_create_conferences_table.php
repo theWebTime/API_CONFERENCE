@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('wp_number', 20);
             $table->string('email', 80)->unique();
             $table->string('logo', 300);
+            $table->string('abstract_file_sample', 300);
             $table->boolean('status')->default(1)->comment('1 is Active & 0 is Inactive');
             $table->unsignedBigInteger('conference_tags_id');
             $table->foreign('conference_tags_id')->references('id')->on('conference_tags');

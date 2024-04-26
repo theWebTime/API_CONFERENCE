@@ -43,9 +43,10 @@ Route::group(['prefix' => '/user-side'], function () {
     Route::get('/conference-tag-listing', [ListingController::class, 'conferenceTagList']);
     Route::get('/conference-type-listing', [ListingController::class, 'conferenceTypeList']);
     Route::get('/conference-listing', [ListingController::class, 'conferenceList']);
+    Route::get('/user-listing', [ListingController::class, 'userList']);
     Route::get('/country-listing', [ListingController::class, 'countryList']);
-    Route::post('/state-listing', [ListingController::class, 'stateList']);
-    Route::post('/city-listing', [ListingController::class, 'cityList']);
+    Route::get('/state-listing/{id}', [ListingController::class, 'stateList']);
+    Route::get('/city-listing/{id}', [ListingController::class, 'cityList']);
 });
 
 // ADMIN routes APIs

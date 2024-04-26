@@ -16,7 +16,6 @@ class ConferenceController extends BaseController
         try {
             $data = Conference::select('id', 'domain', 'title')->where(function ($query) use ($request) {
                 if ($request->search != null) {
-                    $query->where('domain', 'like', '%' . $request->search . '%');
                     $query->where('title', 'like', '%' . $request->search . '%');
                 }
             })->orderBy('id', 'DESC')->paginate($request->itemsPerPage ?? 10);
@@ -123,7 +122,7 @@ class ConferenceController extends BaseController
             if ($validator->fails()) {
                 return $this->sendError('Validation Error.', $validator->errors());
             }
-            $updateData = (['user_id' => $input['user_id'], 'domain' => $input['domain'], 'title' => $input['title'], 'date' => $input['date'], 'address' => $input['address'], 'iframe' => $input['iframe'], 'contact_number1' => $input['contact_number1'], 'contact_number2' => $input['contact_number2'], 'wp_number' => $input['wp_number'], 'email' => $input['email'], 'abstract_file_sample' => $input['abstract_file_sample'], 'conference_tags_id' => $input['conference_tags_id'], 'conference_types_id' => $input['conference_types_id'], 'country_id' => $input['country_id'], 'state_id' => $input['state_id'], 'city_id' => $input['city_id']]);
+            $updateData = (['user_id' => $input['user_id'], 'domain' => $input['domain'], 'title' => $input['title'], 'date' => $input['date'], 'address' => $input['address'], 'iframe' => $input['iframe'], 'contact_number1' => $input['contact_number1'], 'contact_number2' => $input['contact_number2'], 'wp_number' => $input['wp_number'], 'email' => $input['email'], 'conference_tags_id' => $input['conference_tags_id'], 'conference_types_id' => $input['conference_types_id'], 'country_id' => $input['country_id'], 'state_id' => $input['state_id'], 'city_id' => $input['city_id']]);
             if ($request->file('logo')) {
                 $file = $request->file('logo');
                 $filename = time() . $file->getClientOriginalName();

@@ -11,6 +11,7 @@ use App\Models\Country;
 use App\Models\State;
 use App\Models\City;
 use App\Models\Conference;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\BaseController as BaseController;
 
@@ -46,34 +47,20 @@ class ListingController extends BaseController
         }
     }
 
-    public function stateList(Request $request)
+    public function stateList($id)
     {
         try {
-            $input = $request->all();
-            $validator = Validator::make($input, [
-                'id' => 'required|exists:countries,id',
-            ]);
-            if ($validator->fails()) {
-                return $this->sendError('Validation Error.', $validator->errors());
-            }
-            $data = State::where('country_id', $request->input('id'))->select('id', 'name')->get();
+            $data = State::where('country_id', $id)->select('id', 'name')->get();
             return $this->sendResponse($data, 'State Names retrieved successfully.');
         } catch (Exception $e) {
             return $this->sendError('something went wrong!', $e);
         }
     }
 
-    public function cityList(Request $request)
+    public function cityList($id)
     {
         try {
-            $input = $request->all();
-            $validator = Validator::make($input, [
-                'id' => 'required|exists:states,id',
-            ]);
-            if ($validator->fails()) {
-                return $this->sendError('Validation Error.', $validator->errors());
-            }
-            $data = City::where('state_id', $request->input('id'))->select('id', 'name')->get();
+            $data = City::where('state_id', $id)->select('id', 'name')->get();
             return $this->sendResponse($data, 'City Names retrieved successfully.');
         } catch (Exception $e) {
             return $this->sendError('something went wrong!', $e);
@@ -85,6 +72,15 @@ class ListingController extends BaseController
         try {
             $data = Conference::select('id', 'title')->get();
             return $this->sendResponse($data, 'Conference retrieved successfully.');
+        } catch (Exception $e) {
+            return $this->sendError('something went wrong!', $e);
+        }
+    }
+    public function userList()
+    {
+        try {
+            $data = User::select('id', 'name')->get();
+            return $this->sendResponse($data, 'Name retrieved successfully.');
         } catch (Exception $e) {
             return $this->sendError('something went wrong!', $e);
         }

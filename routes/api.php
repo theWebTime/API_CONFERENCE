@@ -19,6 +19,7 @@ use App\Http\Controllers\ConferenceImportantDateController;
 use App\Http\Controllers\ConferenceFaqController;
 use App\Http\Controllers\ConferenceOtherInformationController;
 use App\Http\Controllers\ConferencePlanController;
+use App\Http\Controllers\ListingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,13 @@ Route::post('login', [AuthController::class, 'login']);
 //Open APIs
 Route::group(['prefix' => '/user-side'], function () {
     Route::get('/site-setting-show', [SiteSettingController::class, 'siteSettingShow']);
+    // Listing Routes
+    Route::get('/conference-tag-listing', [ListingController::class, 'conferenceTagList']);
+    Route::get('/conference-type-listing', [ListingController::class, 'conferenceTypeList']);
+    Route::get('/conference-listing', [ListingController::class, 'conferenceList']);
+    Route::get('/country-listing', [ListingController::class, 'countryList']);
+    Route::post('/state-listing', [ListingController::class, 'stateList']);
+    Route::post('/city-listing', [ListingController::class, 'cityList']);
 });
 
 // ADMIN routes APIs

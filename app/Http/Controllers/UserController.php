@@ -25,7 +25,7 @@ class UserController extends BaseController
         }
     }
 
-    public function store(Request $request)
+    /*  public function store(Request $request)
     {
         //Using Try & Catch For Error Handling
         try {
@@ -45,7 +45,7 @@ class UserController extends BaseController
         } catch (Exception $e) {
             return $this->sendError('something went wrong!', $e);
         }
-    }
+    } */
 
     public function show(Request $request)
     {

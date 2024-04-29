@@ -20,6 +20,9 @@ use App\Http\Controllers\ConferenceFaqController;
 use App\Http\Controllers\ConferenceOtherInformationController;
 use App\Http\Controllers\ConferencePlanController;
 use App\Http\Controllers\ListingController;
+use App\Http\Controllers\FiledContactUsController;
+use App\Http\Controllers\SubmitAbstractController;
+use App\Http\Controllers\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +50,13 @@ Route::group(['prefix' => '/user-side'], function () {
     Route::get('/country-listing', [ListingController::class, 'countryList']);
     Route::get('/state-listing/{id}', [ListingController::class, 'stateList']);
     Route::get('/city-listing/{id}', [ListingController::class, 'cityList']);
+
+    // Filed Contact Us Route 
+    Route::post('/filed-contact-us', [FiledContactUsController::class, 'filedContactUs']);
+    // Submit Abstract Rute
+    Route::post('/submit-abstract', [SubmitAbstractController::class, 'store']);
+    // Register Route
+    Route::post('/register', [RegisterController::class, 'store']);
 });
 
 // ADMIN routes APIs
@@ -58,7 +68,7 @@ Route::group(['middleware' => ['auth:api', 'checkRole:admin']],  function () {
     // User Management Routes
     Route::group(['prefix' => '/user-management'], function () {
         Route::get('/index', [UserController::class, 'index']);
-        Route::post('/store', [UserController::class, 'store']);
+        // Route::post('/store', [UserController::class, 'store']);
         Route::post('/show', [UserController::class, 'show']);
         Route::post('/update', [UserController::class, 'update']);
     });
@@ -148,7 +158,7 @@ Route::group(['middleware' => ['auth:api', 'checkRole:admin,conferenceOwner']], 
     // Conference Other Information Routes
     Route::group(['prefix' => '/conference-other-information'], function () {
         Route::post('/store', [ConferenceOtherInformationController::class, 'updateOrCreate']);
-        Route::get('/show', [ConferenceOtherInformationController::class, 'show']);
+        Route::post('/show', [ConferenceOtherInformationController::class, 'show']);
     });
     // Conference Plan Routes
     Route::group(['prefix' => '/conference-plan'], function () {
@@ -156,6 +166,18 @@ Route::group(['middleware' => ['auth:api', 'checkRole:admin,conferenceOwner']], 
         Route::post('/store', [ConferencePlanController::class, 'store']);
         Route::post('/show', [ConferencePlanController::class, 'show']);
         Route::post('/update', [ConferencePlanController::class, 'update']);
+    });
+    // Contact Us Routes
+    Route::group(['prefix' => '/contact-us'], function () {
+        Route::get('/index', [FiledContactUsController::class, 'index']);
+    });
+    // Submit Abstract Routes
+    Route::group(['prefix' => '/submit-abstract'], function () {
+        Route::get('/index', [SubmitAbstractController::class, 'index']);
+    });
+    // Register Routes
+    Route::group(['prefix' => '/register'], function () {
+        Route::get('/index', [RegisterController::class, 'index']);
     });
 });
 

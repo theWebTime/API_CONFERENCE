@@ -22,7 +22,7 @@ class ConferencePlanController extends BaseController
             if ($validator->fails()) {
                 return $this->sendError('Validation Error.', $validator->errors());
             }
-            $data = ConferencePlan::where('conferences_id', $request->input('id'))->select('id', 'title', 'description')->orderBy('id', 'DESC')->paginate($request->itemsPerPage ?? 10);
+            $data = ConferencePlan::where('conferences_id', $request->input('id'))->select('id', 'amount', 'title', 'description', 'status')->orderBy('id', 'DESC')->paginate($request->itemsPerPage ?? 10);
             return $this->sendResponse($data, 'Conference Plan Data retrieved successfully.');
         } catch (Exception $e) {
             return $this->sendError('something went wrong!', $e);
@@ -59,12 +59,12 @@ class ConferencePlanController extends BaseController
         try {
             $input = $request->all();
             $validator = Validator::make($input, [
-                'conference_plan_id' => 'required|exists:conferences,id',
+                'conference_plan_id' => 'required',
             ]);
             if ($validator->fails()) {
                 return $this->sendError('Validation Error.', $validator->errors());
             }
-            $data = ConferencePlan::where('id', $request->input('conference_plan_id'))->select('id', 'amount', 'title', 'status')->first();
+            $data = ConferencePlan::where('id', $request->input('conference_plan_id'))->select('id', 'amount', 'title', 'description', 'status')->first();
             if (is_null($data)) {
                 return $this->sendError('Data not found.');
             }
@@ -84,7 +84,7 @@ class ConferencePlanController extends BaseController
                 'title' => 'required|max:50',
                 'description' => 'required|string',
                 'status' => 'required|in:0,1',
-                'conference_id' => 'required|exists:conferences,id',
+                'conference_id' => 'required',
             ]);
             if ($validator->fails()) {
                 return $this->sendError('Validation Error.', $validator->errors());

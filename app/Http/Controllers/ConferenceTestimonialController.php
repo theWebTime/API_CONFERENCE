@@ -22,7 +22,7 @@ class ConferenceTestimonialController extends BaseController
             if ($validator->fails()) {
                 return $this->sendError('Validation Error.', $validator->errors());
             }
-            $data = ConferenceTestimonial::where('conferences_id', $request->input('id'))->select('id', 'image', 'name', 'designation', 'review')->orderBy('id', 'DESC')->paginate($request->itemsPerPage ?? 10);
+            $data = ConferenceTestimonial::where('conferences_id', $request->input('id'))->select('id', 'image', 'name', 'designation')->orderBy('id', 'DESC')->paginate($request->itemsPerPage ?? 10);
             return $this->sendResponse($data, 'Conference Testimonial Data retrieved successfully.');
         } catch (Exception $e) {
             return $this->sendError('something went wrong!', $e);
@@ -35,7 +35,7 @@ class ConferenceTestimonialController extends BaseController
         try {
             $input = $request->all();
             $validator = Validator::make($input, [
-                'image' => 'mimes:jpg,jpeg,png,bmp,mp4|max:20000',
+                'image' => 'required|mimes:jpg,jpeg,png,bmp,mp4|max:20000',
                 'conference_id' => 'required|exists:conferences,id',
                 'name' => 'required|max:20',
                 'designation' => 'required|max:20',

@@ -36,7 +36,7 @@ class ConferenceScheduleController extends BaseController
             $input = $request->all();
             $validator = Validator::make($input, [
                 'date' => 'required|max:30',
-                'data' => 'mimes:jpg,jpeg,png,bmp,mp4|max:20000',
+                'data' => 'required|mimes:jpg,jpeg,png,bmp,mp4|max:20000',
                 'conference_id' => 'required|exists:conferences,id',
             ]);
             if ($validator->fails()) {

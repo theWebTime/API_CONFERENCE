@@ -17,12 +17,12 @@ class ConferenceOtherInformationController extends BaseController
         try {
             $input = $request->all();
             $validator = Validator::make($input, [
-                'id' => 'required|exists:conferences,id',
+                'id' => 'required|exists:conference_other_information,id',
             ]);
             if ($validator->fails()) {
                 return $this->sendError('Validation Error.', $validator->errors());
             }
-            $data = ConferenceOtherInformation::where('conferences_id', $request->input('id'))->select('venue_description', 'guidelines_description', 'brochures')->first();
+            $data = ConferenceOtherInformation::where('id', $request->input('id'))->select('venue_description', 'guidelines_description', 'brochures')->first();
             if (is_null($data)) {
                 return $this->sendError('Conference Other Information not found.');
             }

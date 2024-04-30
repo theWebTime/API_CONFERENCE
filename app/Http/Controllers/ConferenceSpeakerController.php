@@ -36,8 +36,7 @@ class ConferenceSpeakerController extends BaseController
             //return $request;
             $input = $request->all();
             $validator = Validator::make($input, [
-                'files' => 'required',
-                'files.*' => 'mimes:jpg,jpeg,png,bmp,mp4|max:20000',
+                'image' => 'required|mimes:jpg,jpeg,png,bmp,mp4|max:20000',
                 'conference_id' => 'required|exists:conferences,id',
                 'name' => 'required|max:20',
                 'designation' => 'required|max:20',
@@ -48,21 +47,14 @@ class ConferenceSpeakerController extends BaseController
             if ($validator->fails()) {
                 return $this->sendError('Validation Error.', $validator->errors());
             }
-            foreach ($input['files'] as $data) {
-                $filename = rand(11111, 99999) . strtotime("now") . '.' . $data->getClientOriginalExtension();
-                $data->move(public_path('images/conferenceSpeaker'), $filename);
-                ConferenceSpeaker::insert(
-                    [
-                        'conferences_id' => $request->input('conference_id'),
-                        'image' => $filename,
-                        'name' => $input['name'],
-                        'designation' => $input['designation'],
-                        'facebook_link' => $input['facebook_link'],
-                        'x_link' => $input['x_link'],
-                        'linkedin_link' => $input['linkedin_link']
-                    ]
-                );
+            $updateData = (['conferences_id' => $request->input('conference_id'), 'name' => $input['name'], 'designation' => $input['designation'], 'facebook_link' => $input['facebook_link'], 'x_link' => $input['x_link'], 'linkedin_link' => $input['linkedin_link']]);
+            if ($request->file('image')) {
+                $file = $request->file('image');
+                $filename = time() . $file->getClientOriginalName();
+                $file->move(public_path('images/conferenceSchedule'), $filename);
+                $updateData['image'] = $filename;
             }
+            ConferenceSpeaker::insert($updateData);
             return $this->sendResponse([], 'Conference Speaker created successfully.');
         } catch (Exception $e) {
             return $this->sendError('something went wrong!', $e);

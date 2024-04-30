@@ -22,7 +22,7 @@ class ConferencePlanController extends BaseController
             if ($validator->fails()) {
                 return $this->sendError('Validation Error.', $validator->errors());
             }
-            $data = ConferencePlan::where('conferences_id', $request->input('id'))->select('id', 'amount', 'title', 'description', 'status')->orderBy('id', 'DESC')->paginate($request->itemsPerPage ?? 10);
+            $data = ConferencePlan::where('conferences_id', $request->input('id'))->select('id', 'amount', 'title', 'status')->orderBy('id', 'DESC')->paginate($request->itemsPerPage ?? 10);
             return $this->sendResponse($data, 'Conference Plan Data retrieved successfully.');
         } catch (Exception $e) {
             return $this->sendError('something went wrong!', $e);

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('conference_tags', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 50);
+            $table->string('title', 50)->unique();
             $table->boolean('status')->default(1)->comment("1 for active and 0 for in-active");
             $table->timestamps();
         });

@@ -33,28 +33,23 @@ class ConferenceScheduleController extends BaseController
     {
         //Using Try & Catch For Error Handling
         try {
-            //return $request;
             $input = $request->all();
             $validator = Validator::make($input, [
-                'files' => 'required',
                 'date' => 'required|max:30',
-                'files.*' => 'mimes:jpg,jpeg,png,bmp,mp4|max:20000',
+                'data' => 'mimes:jpg,jpeg,png,bmp,mp4|max:20000',
                 'conference_id' => 'required|exists:conferences,id',
             ]);
             if ($validator->fails()) {
                 return $this->sendError('Validation Error.', $validator->errors());
             }
-            foreach ($input['files'] as $data) {
-                $filename = rand(11111, 99999) . strtotime("now") . '.' . $data->getClientOriginalExtension();
-                $data->move(public_path('images/conferenceSchedule'), $filename);
-                ConferenceSchedule::insert(
-                    [
-                        'conferences_id' => $request->input('conference_id'),
-                        'data' => $filename,
-                        'date' => $input['date']
-                    ]
-                );
+            $updateData = (['conferences_id' => $request->input('conference_id'), 'date' => $input['date']]);
+            if ($request->file('data')) {
+                $file = $request->file('data');
+                $filename = time() . $file->getClientOriginalName();
+                $file->move(public_path('images/conferenceSchedule'), $filename);
+                $updateData['data'] = $filename;
             }
+            ConferenceSchedule::insert($updateData);
             return $this->sendResponse([], 'Conference Schedule created successfully.');
         } catch (Exception $e) {
             return $this->sendError('something went wrong!', $e);

@@ -31,7 +31,7 @@ class ConferenceTagController extends BaseController
         try {
             $input = $request->all();
             $validator = Validator::make($input, [
-                'title' => 'required|max:50',
+                'title' => 'required|max:50|unique:conference_tags',
             ]);
             if ($validator->fails()) {
                 return $this->sendError('Validation Error.', $validator->errors());
@@ -72,7 +72,7 @@ class ConferenceTagController extends BaseController
         try {
             $input = $request->all();
             $validator = Validator::make($input, [
-                'title' => 'required|max:50',
+                'title' => 'required|max:50|unique:conference_tags',
                 'status' => 'required|in:0,1',
                 'conference_tag_id' => 'required',
             ]);

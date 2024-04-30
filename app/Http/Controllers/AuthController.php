@@ -67,7 +67,7 @@ class AuthController extends BaseController
             $validator = Validator::make($request->all(), [
                 'name' => 'required|min:3',
                 'email' => 'required|email|unique:users,email,' . $user->id,
-                'password' => 'required|min:6|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/|max:20'
+                'password' => 'nullable|min:6|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/|max:20'
             ]);
             if ($request->password) {
                 $input['password'] = bcrypt($request->password);

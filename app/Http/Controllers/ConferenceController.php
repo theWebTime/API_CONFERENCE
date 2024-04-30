@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use \Exception;
 use App\Models\Conference;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\BaseController as BaseController;
 
@@ -31,22 +32,23 @@ class ConferenceController extends BaseController
 
     public function store(Request $request)
     {
+        DB::beginTransaction();
         //Using Try & Catch For Error Handling
         try {
             $input = $request->all();
             $validator = Validator::make($input, [
-                'logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
+                'logo' => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
                 'domain' => 'required|max:50|url|unique:conferences',
                 'title' => 'required|string|max:50|unique:conferences',
                 'date' => 'required|max:30',
                 'address' => 'required|string',
-                'iframe' => 'nullable|string',
+                'iframe' => 'required|string',
                 'contact_number1' => 'required|max:20',
                 'contact_number2' => 'required|max:20',
                 'wp_number' => 'required|max:20',
                 'email' => 'required|max:80|unique:conferences',
                 'password' => 'required|min:6|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/|max:20',
-                'abstract_file_sample' => 'nullable|mimes:pdf|max:30000',
+                'abstract_file_sample' => 'required|mimes:pdf|max:30000',
                 'conference_tags_id' => 'required|exists:conference_tags,id',
                 'conference_types_id' => 'required|exists:conference_types,id',
                 'country_id' => 'required|exists:countries,id',
@@ -72,8 +74,10 @@ class ConferenceController extends BaseController
             }
             // Insert Conference in conferences Table
             $data = Conference::insert($updateData);
+            DB::commit();
             return $this->sendResponse($data, 'Conference created successfully.');
         } catch (Exception $e) {
+            DB::rollback();
             return $this->sendError('something went wrong!', $e);
         }
     }
@@ -101,6 +105,7 @@ class ConferenceController extends BaseController
 
     public function update(Request $request)
     {
+        DB::beginTransaction();
         //Using Try & Catch For Error Handling
         try {
             $input = $request->all();
@@ -127,7 +132,8 @@ class ConferenceController extends BaseController
             if ($validator->fails()) {
                 return $this->sendError('Validation Error.', $validator->errors());
             }
-            $updateData = (['user_id' => $input['user_id'], 'domain' => $input['domain'], 'title' => $input['title'], 'date' => $input['date'], 'address' => $input['address'], 'iframe' => $input['iframe'], 'contact_number1' => $input['contact_number1'], 'contact_number2' => $input['contact_number2'], 'wp_number' => $input['wp_number'], 'email' => $input['email'], 'conference_tags_id' => $input['conference_tags_id'], 'conference_types_id' => $input['conference_types_id'], 'country_id' => $input['country_id'], 'state_id' => $input['state_id'], 'city_id' => $input['city_id']]);
+            $user = User::create(['name' => $input['title'], 'email' => $input['email']]);
+            $updateData = (['user_id' => $user->id, 'domain' => $input['domain'], 'title' => $input['title'], 'date' => $input['date'], 'address' => $input['address'], 'iframe' => $input['iframe'], 'contact_number1' => $input['contact_number1'], 'contact_number2' => $input['contact_number2'], 'wp_number' => $input['wp_number'], 'email' => $input['email'], 'conference_tags_id' => $input['conference_tags_id'], 'conference_types_id' => $input['conference_types_id'], 'country_id' => $input['country_id'], 'state_id' => $input['state_id'], 'city_id' => $input['city_id']]);
             if ($request->file('logo')) {
                 $file = $request->file('logo');
                 $filename = time() . $file->getClientOriginalName();
@@ -142,9 +148,10 @@ class ConferenceController extends BaseController
             }
             // Update Conference in conferences Table
             Conference::where('id', $request->input('conference_id'))->update($updateData);
+            DB::commit();
             return $this->sendResponse([], 'Conference updated successfully.');
         } catch (Exception $e) {
-            return $e;
+            DB::rollback();
             return $this->sendError('something went wrong!', $e);
         }
     }

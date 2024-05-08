@@ -72,14 +72,6 @@ Route::group(['middleware' => ['auth:api', 'checkRole:admin']],  function () {
         Route::post('/show', [UserController::class, 'show']);
         Route::post('/update', [UserController::class, 'update']);
     });
-});
-
-// Conference Owner APIs
-Route::group(['middleware' => ['auth:api', 'checkRole:conferenceOwner']],  function () {
-});
-
-// ADMIN & Conference Owner APIs
-Route::group(['middleware' => ['auth:api', 'checkRole:admin,conferenceOwner']],  function () {
     // Conference Tag Routes
     Route::group(['prefix' => '/conference-tag'], function () {
         Route::get('/index', [ConferenceTagController::class, 'index']);
@@ -94,10 +86,21 @@ Route::group(['middleware' => ['auth:api', 'checkRole:admin,conferenceOwner']], 
         Route::post('/show', [ConferenceTypeController::class, 'show']);
         Route::post('/update', [ConferenceTypeController::class, 'update']);
     });
+    Route::group(['prefix' => '/conference'], function () {
+        Route::post('/store', [ConferenceController::class, 'store']);
+    });
+});
+
+// Conference Owner APIs
+Route::group(['middleware' => ['auth:api', 'checkRole:conferenceOwner']],  function () {
+});
+
+// ADMIN & Conference Owner APIs
+Route::group(['middleware' => ['auth:api', 'checkRole:admin,conferenceOwner']],  function () {
+    
     // Conference Routes
     Route::group(['prefix' => '/conference'], function () {
         Route::get('/index', [ConferenceController::class, 'index']);
-        Route::post('/store', [ConferenceController::class, 'store']);
         Route::post('/show', [ConferenceController::class, 'show']);
         Route::post('/update', [ConferenceController::class, 'update']);
     });

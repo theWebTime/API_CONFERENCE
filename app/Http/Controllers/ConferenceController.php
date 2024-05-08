@@ -105,7 +105,6 @@ class ConferenceController extends BaseController
 
     public function update(Request $request)
     {
-        DB::beginTransaction();
         //Using Try & Catch For Error Handling
         try {
             $input = $request->all();
@@ -132,8 +131,7 @@ class ConferenceController extends BaseController
             if ($validator->fails()) {
                 return $this->sendError('Validation Error.', $validator->errors());
             }
-            $user = User::create(['name' => $input['title'], 'email' => $input['email']]);
-            $updateData = (['user_id' => $user->id, 'domain' => $input['domain'], 'title' => $input['title'], 'date' => $input['date'], 'address' => $input['address'], 'iframe' => $input['iframe'], 'contact_number1' => $input['contact_number1'], 'contact_number2' => $input['contact_number2'], 'wp_number' => $input['wp_number'], 'email' => $input['email'], 'conference_tags_id' => $input['conference_tags_id'], 'conference_types_id' => $input['conference_types_id'], 'country_id' => $input['country_id'], 'state_id' => $input['state_id'], 'city_id' => $input['city_id']]);
+            $updateData = (['domain' => $input['domain'], 'title' => $input['title'], 'date' => $input['date'], 'address' => $input['address'], 'iframe' => $input['iframe'], 'contact_number1' => $input['contact_number1'], 'contact_number2' => $input['contact_number2'], 'wp_number' => $input['wp_number'], 'email' => $input['email'], 'conference_tags_id' => $input['conference_tags_id'], 'conference_types_id' => $input['conference_types_id'], 'country_id' => $input['country_id'], 'state_id' => $input['state_id'], 'city_id' => $input['city_id']]);
             if ($request->file('logo')) {
                 $file = $request->file('logo');
                 $filename = time() . $file->getClientOriginalName();
@@ -148,10 +146,8 @@ class ConferenceController extends BaseController
             }
             // Update Conference in conferences Table
             Conference::where('id', $request->input('conference_id'))->update($updateData);
-            DB::commit();
             return $this->sendResponse([], 'Conference updated successfully.');
         } catch (Exception $e) {
-            DB::rollback();
             return $this->sendError('something went wrong!', $e);
         }
     }

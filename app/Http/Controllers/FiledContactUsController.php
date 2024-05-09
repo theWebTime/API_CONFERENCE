@@ -15,12 +15,11 @@ class FiledContactUsController extends BaseController
     public function index(Request $request)
     {
         try {
-            $data = FiledContactUs::join('conferences', 'conferences.id', '=', 'filed_contact_us.conferences_id')->select('filed_contact_us.id', 'filed_contact_us.conferences_id', 'name', 'filed_contact_us.email', 'phone_number', 'filed_contact_us.country_id', 'message')->where(function ($query) use ($request) {
-
+            $data = FiledContactUs::join('conferences', 'conferences.id', '=', 'filed_contact_us.conferences_id')->join('countries', 'countries.id', '=', 'filed_contact_us.country_id')->select('filed_contact_us.id', 'filed_contact_us.conferences_id', 'filed_contact_us.name', 'filed_contact_us.email', 'phone_number', 'countries.name as country_name', 'message', 'domain')->where(function ($query) use ($request) {
                 if (auth()->user()->role == 2) {
                     $query->where('conferences.user_id', auth()->user()->id);
                 }
-            })->get();
+            })->orderBy('id', 'DESC')->paginate($request->itemsPerPage ?? 10);
             return $this->sendResponse($data, 'Data retrieved successfully.');
         } catch (Exception $e) {
             return $this->sendError('something went wrong!', $e);

@@ -97,7 +97,7 @@ Route::group(['middleware' => ['auth:api', 'checkRole:conferenceOwner']],  funct
 
 // ADMIN & Conference Owner APIs
 Route::group(['middleware' => ['auth:api', 'checkRole:admin,conferenceOwner']],  function () {
-    
+
     // Conference Routes
     Route::group(['prefix' => '/conference'], function () {
         Route::get('/index', [ConferenceController::class, 'index']);

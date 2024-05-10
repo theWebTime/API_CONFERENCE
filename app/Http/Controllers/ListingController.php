@@ -13,6 +13,7 @@ use App\Models\City;
 use App\Models\Conference;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 use App\Http\Controllers\BaseController as BaseController;
 
 class ListingController extends BaseController
@@ -67,15 +68,36 @@ class ListingController extends BaseController
         }
     }
 
-    public function conferenceList()
+    public function conferenceList(Request $request)
     {
         try {
-            $data = Conference::select('id', 'title')->get();
+            $data = Conference::join('countries', 'countries.id', '=', 'conferences.country_id')->join('states', 'states.id', '=', 'conferences.state_id')->join('cities', 'cities.id', '=', 'conferences.city_id')->select('conferences.id', 'title', 'date', 'logo', 'domain', 'contact_number1', 'address', 'email', 'countries.name as country_name', 'states.name as state_name', 'cities.name as city_name');
+            if (!$request->total) {
+                $data = $data->orderBy('id', 'DESC')->get();
+            } else {
+                $data = $data->limit(6)->orderBy('id', 'DESC')->get();
+            }
             return $this->sendResponse($data, 'Conference retrieved successfully.');
         } catch (Exception $e) {
             return $this->sendError('something went wrong!', $e);
         }
     }
+    public function getConference(Request $request)
+    {
+        try {
+            $previousDate = Conference::join('countries', 'countries.id', '=', 'conferences.country_id')->join('states', 'states.id', '=', 'conferences.state_id')->join('cities', 'cities.id', '=', 'conferences.city_id')->select('conferences.id', 'title', 'date', 'logo', 'domain', 'contact_number1', 'address', 'email', 'countries.name as country_name', 'states.name as state_name', 'cities.name as city_name')->where('date', '<', Carbon::now()->toDateTimeString())->get();
+            $upcomingDate = Conference::join('countries', 'countries.id', '=', 'conferences.country_id')->join('states', 'states.id', '=', 'conferences.state_id')->join('cities', 'cities.id', '=', 'conferences.country_id')->select('conferences.id', 'title', 'date', 'logo', 'domain', 'contact_number1', 'address', 'email', 'countries.name as country_name', 'states.name as state_name', 'cities.name as city_name')->where('date', '>', Carbon::now()->toDateTimeString())->get();
+            $data = $request->date == 'upcomingDate' ? $upcomingDate : $previousDate;
+            /* $data = Conference::where(function ($query) use ($request) {
+                
+            })->orderBy($request->date == 'upcomingDate' ? $upcomingDate : $previousDate)->get(); */
+            return $this->sendResponse($data, 'Conference Data retrieved successfully.');
+        } catch (Exception $e) {
+            return $e;
+            return $this->sendError('something went wrong!', $e);
+        }
+    }
+
     public function userList()
     {
         try {

@@ -46,11 +46,13 @@ Route::group(['prefix' => '/user-side'], function () {
     Route::get('/conference-tag-listing', [ListingController::class, 'conferenceTagList']);
     Route::get('/conference-type-listing', [ListingController::class, 'conferenceTypeList']);
     Route::get('/conference-listing', [ListingController::class, 'conferenceList']);
+    Route::get('/filter-conference-listing', [ListingController::class, 'getConference']);
     Route::get('/user-listing', [ListingController::class, 'userList']);
     Route::get('/country-listing', [ListingController::class, 'countryList']);
     Route::get('/state-listing/{id}', [ListingController::class, 'stateList']);
     Route::get('/city-listing/{id}', [ListingController::class, 'cityList']);
-
+    // USer Contact Us Route 
+    Route::post('/user-contact-us', [FiledContactUsController::class, 'userStore']);
     // Filed Contact Us Route 
     Route::post('/filed-contact-us', [FiledContactUsController::class, 'filedContactUs']);
     // Submit Abstract Rute
@@ -88,6 +90,10 @@ Route::group(['middleware' => ['auth:api', 'checkRole:admin']],  function () {
     });
     Route::group(['prefix' => '/conference'], function () {
         Route::post('/store', [ConferenceController::class, 'store']);
+    });
+    // User Contact Us Route
+    Route::group(['prefix' => '/user-contact-us'], function () {
+        Route::get('/show', [FiledContactUsController::class, 'userIndex']);
     });
 });
 

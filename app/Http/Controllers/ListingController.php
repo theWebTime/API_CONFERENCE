@@ -88,12 +88,8 @@ class ListingController extends BaseController
             $previousDate = Conference::join('countries', 'countries.id', '=', 'conferences.country_id')->join('states', 'states.id', '=', 'conferences.state_id')->join('cities', 'cities.id', '=', 'conferences.city_id')->select('conferences.id', 'title', 'date', 'logo', 'domain', 'contact_number1', 'address', 'email', 'countries.name as country_name', 'states.name as state_name', 'cities.name as city_name')->where('date', '<', Carbon::now()->toDateTimeString())->get();
             $upcomingDate = Conference::join('countries', 'countries.id', '=', 'conferences.country_id')->join('states', 'states.id', '=', 'conferences.state_id')->join('cities', 'cities.id', '=', 'conferences.country_id')->select('conferences.id', 'title', 'date', 'logo', 'domain', 'contact_number1', 'address', 'email', 'countries.name as country_name', 'states.name as state_name', 'cities.name as city_name')->where('date', '>', Carbon::now()->toDateTimeString())->get();
             $data = $request->date == 'upcomingDate' ? $upcomingDate : $previousDate;
-            /* $data = Conference::where(function ($query) use ($request) {
-                
-            })->orderBy($request->date == 'upcomingDate' ? $upcomingDate : $previousDate)->get(); */
             return $this->sendResponse($data, 'Conference Data retrieved successfully.');
         } catch (Exception $e) {
-            return $e;
             return $this->sendError('something went wrong!', $e);
         }
     }

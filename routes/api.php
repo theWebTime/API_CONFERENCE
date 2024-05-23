@@ -46,7 +46,7 @@ Route::group(['prefix' => '/user-side'], function () {
     Route::get('/conference-tag-listing', [ListingController::class, 'conferenceTagList']);
     Route::get('/conference-type-listing', [ListingController::class, 'conferenceTypeList']);
     Route::get('/conference-listing', [ListingController::class, 'conferenceList']);
-    Route::get('/filter-conference-listing', [ListingController::class, 'getConference']);
+    Route::post('/filter-conference-listing', [ListingController::class, 'getConference']);
     Route::get('/user-listing', [ListingController::class, 'userList']);
     Route::get('/country-listing', [ListingController::class, 'countryList']);
     Route::get('/state-listing/{id}', [ListingController::class, 'stateList']);

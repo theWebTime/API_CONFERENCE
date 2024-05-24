@@ -9,6 +9,8 @@ use App\Models\Conference;
 use App\Models\UserContactUs;
 use App\Models\FiledContactUs;
 use Illuminate\Support\Facades\Validator;
+use Mail;
+use App\Mail\ContactUsMailConference;
 use App\Http\Controllers\BaseController as BaseController;
 
 class FiledContactUsController extends BaseController
@@ -30,7 +32,7 @@ class FiledContactUsController extends BaseController
     {
         try {
             $domain = 'https://www.instagram.com/';
-            $data = Conference::where('domain', $domain)->select('id')->first();
+            $data = Conference::where('domain', $domain)->select('id', 'email')->first();
             $input = $request->all();
             $validator = Validator::make($input, [
                 'name' => 'required|max:20',
@@ -44,9 +46,16 @@ class FiledContactUsController extends BaseController
                 return $this->sendError('Validation Error.', $validator->errors());
             }
             $updateData = (['conferences_id' => $data->id, 'name' => $input['name'], 'email' => $input['email'], 'phone_number' => $input['phone_number'], 'country_id' => $input['country_id'], 'message' => $input['message']]);
-            $contactUs = FiledContactUs::insert($updateData);
+            $contactUs = FiledContactUs::create($updateData);
+            $mailData = [
+                'title' => 'Mail from Contact Lead',
+                'data' =>  $contactUs
+            ];
+            // dd($mailData);
+            Mail::to($data->email)->send(new ContactUsMailConference($mailData));
             return $this->sendResponse([], 'Thank you for submitting your Info.');
         } catch (Exception $e) {
+            return $e;
             return $this->sendError('something went wrong!', $e);
         }
     }

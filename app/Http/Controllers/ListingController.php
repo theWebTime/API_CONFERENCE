@@ -71,7 +71,7 @@ class ListingController extends BaseController
     public function conferenceList(Request $request)
     {
         try {
-            $data = Conference::join('countries', 'countries.id', '=', 'conferences.country_id')->join('states', 'states.id', '=', 'conferences.state_id')->join('cities', 'cities.id', '=', 'conferences.city_id')->select('conferences.id', 'title', 'date', 'logo', 'domain', 'contact_number1', 'address', 'email', 'countries.name as country_name', 'states.name as state_name', 'cities.name as city_name');
+            $data = Conference::select('id', 'title', 'date', 'logo')->where('date', '>', Carbon::now()->toDateTimeString());
             if (!$request->total) {
                 $data = $data->orderBy('id', 'DESC')->get();
             } else {

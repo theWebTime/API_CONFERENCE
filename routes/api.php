@@ -23,6 +23,8 @@ use App\Http\Controllers\ListingController;
 use App\Http\Controllers\FiledContactUsController;
 use App\Http\Controllers\SubmitAbstractController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\AboutUsController;
+use App\Http\Controllers\GalleryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +44,10 @@ Route::post('login', [AuthController::class, 'login']);
 //Open APIs
 Route::group(['prefix' => '/user-side'], function () {
     Route::get('/site-setting-show', [SiteSettingController::class, 'siteSettingShow']);
+    Route::get('/about-us-show', [AboutUsController::class, 'aboutUsShow']);
+    Route::get('/count', [AboutUsController::class, 'count']);
+    Route::get('/show-all-gallery', [GalleryController::class, 'showAllGallery']);
+
     // Listing Routes
     Route::get('/conference-tag-listing', [ListingController::class, 'conferenceTagList']);
     Route::get('/conference-type-listing', [ListingController::class, 'conferenceTypeList']);
@@ -66,6 +72,10 @@ Route::group(['middleware' => ['auth:api', 'checkRole:admin']],  function () {
     // Site Setting Routes
     Route::group(['prefix' => '/site-setting'], function () {
         Route::post('/store', [SiteSettingController::class, 'updateOrCreateSiteSetting']);
+    });
+    // About Us Routes
+    Route::group(['prefix' => '/about-us'], function () {
+        Route::post('/store', [AboutUsController::class, 'updateOrCreateAboutUs']);
     });
     // User Management Routes
     Route::group(['prefix' => '/user-management'], function () {
@@ -187,6 +197,12 @@ Route::group(['middleware' => ['auth:api', 'checkRole:admin,conferenceOwner']], 
     // Register Routes
     Route::group(['prefix' => '/register'], function () {
         Route::get('/index', [RegisterController::class, 'index']);
+    });
+    // Gallery Routes
+    Route::group(['prefix' => '/gallery'], function () {
+        Route::get('/index', [GalleryController::class, 'index']);
+        Route::post('/store', [GalleryController::class, 'store']);
+        Route::post('/delete', [GalleryController::class, 'delete']);
     });
 });
 

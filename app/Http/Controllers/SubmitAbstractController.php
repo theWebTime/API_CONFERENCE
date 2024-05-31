@@ -8,6 +8,8 @@ use \Exception;
 use App\Models\Conference;
 use App\Models\SubmitAbstract;
 use Illuminate\Support\Facades\Validator;
+use Mail;
+use App\Mail\SubmitAbstractMailConference;
 use App\Http\Controllers\BaseController as BaseController;
 
 class SubmitAbstractController extends BaseController
@@ -31,7 +33,7 @@ class SubmitAbstractController extends BaseController
     {
         try {
             $domain = 'https://www.instagram.com/';
-            $data = Conference::where('domain', $domain)->select('id')->first();
+            $data = Conference::where('domain', $domain)->select('id', 'email')->first();
             $input = $request->all();
             $validator = Validator::make($input, [
                 'title' => 'required|max:20',
@@ -58,9 +60,16 @@ class SubmitAbstractController extends BaseController
                 $file->move(public_path('file/submitAbstractFile'), $filename);
                 $updateData['submit_abstract_file'] = $filename;
             }
-            $submitAbstract = SubmitAbstract::insert($updateData);
+            $submitAbstract = SubmitAbstract::create($updateData);
+            $mailData = [
+                'title' => 'Mail from Submit Abstract Lead',
+                'data' =>  $submitAbstract
+            ];
+            // dd($mailData);
+            Mail::to($data->email)->send(new SubmitAbstractMailConference($mailData));
             return $this->sendResponse([], 'Thank you for submitting your Info.');
         } catch (Exception $e) {
+            return $e;
             return $this->sendError('something went wrong!', $e);
         }
     }

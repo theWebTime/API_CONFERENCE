@@ -8,6 +8,8 @@ use \Exception;
 use App\Models\Conference;
 use App\Models\Register;
 use Illuminate\Support\Facades\Validator;
+use Mail;
+use App\Mail\RegisterMailConference;
 use App\Http\Controllers\BaseController as BaseController;
 
 class RegisterController extends BaseController
@@ -31,7 +33,7 @@ class RegisterController extends BaseController
     {
         try {
             $domain = 'https://www.instagram.com/';
-            $data = Conference::where('domain', $domain)->select('id')->first();
+            $data = Conference::where('domain', $domain)->select('id', 'email')->first();
             $input = $request->all();
             $validator = Validator::make($input, [
                 'title' => 'required|max:20',
@@ -47,7 +49,13 @@ class RegisterController extends BaseController
                 return $this->sendError('Validation Error.', $validator->errors());
             }
             $updateData = (['conferences_id' => $data->id, 'title' => $input['title'], 'name' => $input['name'], 'email' => $input['email'], 'alternative_email' => $input['alternative_email'], 'phone_number' => $input['phone_number'], 'whatsapp_number' => $input['whatsapp_number'], 'institution' => $input['institution'], 'country_id' => $input['country_id']]);
-            $register = Register::insert($updateData);
+            $register = Register::create($updateData);
+            $mailData = [
+                'title' => 'Mail from Register Lead',
+                'data' =>  $register
+            ];
+            // dd($mailData);
+            Mail::to($data->email)->send(new RegisterMailConference($mailData));
             return $this->sendResponse([], 'Thank you for submitting your Info.');
         } catch (Exception $e) {
             return $this->sendError('something went wrong!', $e);

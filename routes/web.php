@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\WEB\HomeController;
+use App\Http\Controllers\WEB\WebCommonController;
 
 
 /*
@@ -15,4 +15,5 @@ use App\Http\Controllers\WEB\HomeController;
 |
 */
 
- Route::get('/', [HomeController::class, 'index']);
+ Route::get('/', [WebCommonController::class, 'home']);
+ Route::get('/conference-speakers', [WebCommonController::class, 'conferenceSpeakers'])->name('conference-speakers');

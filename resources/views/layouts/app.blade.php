@@ -21,13 +21,20 @@
         <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}"/>
         <link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}"/>
         <link rel="stylesheet" href="{{ asset('assets/demos/conference/conference.css') }}" />
+
+        <style>
+            :root {
+                --base-color: {{ '#d90a2c' }};
+            }
+            .bg-base-color-transparent {
+                background-color: {{ '#d90a2c' }};
+            }
+        </style>
     </head>
     <body data-mobile-nav-style="classic">  
         @include('partials.header')
 
-        {{-- <main> --}}
-            @yield('content')
-        {{-- </main> --}}
+        @yield('content')
 
         @include('partials.footer')
         

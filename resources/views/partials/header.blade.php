@@ -20,7 +20,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav"> 
                     <ul class="navbar-nav alt-font ls-05px">
                         <li class="nav-item"><a href="demo-conference.html" class="nav-link">Home</a></li>
-                        <li class="nav-item"><a href="demo-conference-about-event.html" class="nav-link">About event</a></li>
+                        <li class="nav-item"><a href="{{ route('conference-speakers') }}" class="nav-link">Scientific Committee</a></li>
                         <li class="nav-item dropdown dropdown-with-icon">
                             <a href="demo-conference-speakers.html" class="nav-link">Speakers</a>
                             <i class="fa-solid fa-angle-down dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>

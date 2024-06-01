@@ -26,12 +26,17 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $domain = Request::getHost();
-        // dd($domain);
         // Use view composer to pass data to the header and footer views
         View::composer(['partials.header', 'partials.footer', 'layouts.app'], function ($view) {
-            $domain = 'https://www.instagram.com/';
+            if(env('APP_ENV') == 'production'){
+                $domain = Request::getHost();
+            }else {
+                $domain = 'https://www.instagram.com/';
+            }
             $data = Conference::where('domain', $domain)->first();
+            if(!$data){
+                dd("Your domain is not added as conference, please talk to administrator");
+            }
 
 
             // Pass data to the view

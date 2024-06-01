@@ -24,10 +24,10 @@
 
         <style>
             :root {
-                --base-color: {{ '#d90a2c' }};
+                --base-color: {{ $data->primary_color }};
             }
             .bg-base-color-transparent {
-                background-color: {{ '#d90a2c' }};
+                background-color: {{ $data->secondary_color }};
             }
         </style>
     </head>

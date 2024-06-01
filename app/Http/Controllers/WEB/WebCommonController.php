@@ -17,7 +17,7 @@ class WebCommonController extends Controller
         }
     }
 
-    public function conferenceSpeakers(Request $request)
+    public function speaker(Request $request)
     {
         try {
             return view('conference-speakers');

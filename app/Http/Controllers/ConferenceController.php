@@ -37,6 +37,8 @@ class ConferenceController extends BaseController
         try {
             $input = $request->all();
             $validator = Validator::make($input, [
+                'primary_color' => 'required|string|max:10',
+                'secondary_color' => 'required|string|max:10',
                 'logo' => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
                 'domain' => 'required|max:50|url|unique:conferences',
                 'title' => 'required|string|max:50|unique:conferences',
@@ -59,7 +61,7 @@ class ConferenceController extends BaseController
                 return $this->sendError('Validation Error.', $validator->errors());
             }
             $user = User::create(['name' => $input['title'], 'email' => $input['email'], 'password' => bcrypt($input['password']), 'role' => 2]);
-            $updateData = (['user_id' => $user->id, 'domain' => $input['domain'], 'title' => $input['title'], 'date' => $input['date'], 'address' => $input['address'], 'iframe' => $input['iframe'], 'contact_number1' => $input['contact_number1'], 'contact_number2' => $input['contact_number2'], 'wp_number' => $input['wp_number'], 'email' => $input['email'], 'abstract_file_sample' => $input['abstract_file_sample'], 'conference_tags_id' => $input['conference_tags_id'], 'conference_types_id' => $input['conference_types_id'], 'country_id' => $input['country_id'], 'state_id' => $input['state_id'], 'city_id' => $input['city_id']]);
+            $updateData = (['user_id' => $user->id, 'primary_color' => $input['primary_color'], 'secondary_color' => $input['secondary_color'], 'domain' => $input['domain'], 'title' => $input['title'], 'date' => $input['date'], 'address' => $input['address'], 'iframe' => $input['iframe'], 'contact_number1' => $input['contact_number1'], 'contact_number2' => $input['contact_number2'], 'wp_number' => $input['wp_number'], 'email' => $input['email'], 'abstract_file_sample' => $input['abstract_file_sample'], 'conference_tags_id' => $input['conference_tags_id'], 'conference_types_id' => $input['conference_types_id'], 'country_id' => $input['country_id'], 'state_id' => $input['state_id'], 'city_id' => $input['city_id']]);
             if ($request->file('logo')) {
                 $file = $request->file('logo');
                 $filename = time() . $file->getClientOriginalName();
@@ -93,7 +95,7 @@ class ConferenceController extends BaseController
             if ($validator->fails()) {
                 return $this->sendError('Validation Error.', $validator->errors());
             }
-            $data = Conference::where('id', $request->input('conference_id'))->select('id', 'user_id', 'domain', 'title', 'date', 'address', 'iframe', 'contact_number1', 'contact_number2', 'wp_number', 'email', 'logo', 'abstract_file_sample', 'status', 'conference_tags_id', 'conference_types_id', 'country_id', 'state_id', 'city_id')->first();
+            $data = Conference::where('id', $request->input('conference_id'))->select('id', 'user_id', 'primary_color', 'secondary_color', 'domain', 'title', 'date', 'address', 'iframe', 'contact_number1', 'contact_number2', 'wp_number', 'email', 'logo', 'abstract_file_sample', 'status', 'conference_tags_id', 'conference_types_id', 'country_id', 'state_id', 'city_id')->first();
             if (is_null($data)) {
                 return $this->sendError('Data not found.');
             }
@@ -109,6 +111,8 @@ class ConferenceController extends BaseController
         try {
             $input = $request->all();
             $validator = Validator::make($input, [
+                'primary_color' => 'required|string|max:10',
+                'secondary_color' => 'required|string|max:10',
                 'logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
                 'user_id' => 'required|exists:users,id',
                 'domain' => 'required|max:50|url',
@@ -131,7 +135,7 @@ class ConferenceController extends BaseController
             if ($validator->fails()) {
                 return $this->sendError('Validation Error.', $validator->errors());
             }
-            $updateData = (['domain' => $input['domain'], 'title' => $input['title'], 'date' => $input['date'], 'address' => $input['address'], 'iframe' => $input['iframe'], 'contact_number1' => $input['contact_number1'], 'contact_number2' => $input['contact_number2'], 'wp_number' => $input['wp_number'], 'email' => $input['email'], 'conference_tags_id' => $input['conference_tags_id'], 'conference_types_id' => $input['conference_types_id'], 'country_id' => $input['country_id'], 'state_id' => $input['state_id'], 'city_id' => $input['city_id']]);
+            $updateData = (['primary_color' => $input['primary_color'], 'secondary_color' => $input['secondary_color'], 'domain' => $input['domain'], 'title' => $input['title'], 'date' => $input['date'], 'address' => $input['address'], 'iframe' => $input['iframe'], 'contact_number1' => $input['contact_number1'], 'contact_number2' => $input['contact_number2'], 'wp_number' => $input['wp_number'], 'email' => $input['email'], 'conference_tags_id' => $input['conference_tags_id'], 'conference_types_id' => $input['conference_types_id'], 'country_id' => $input['country_id'], 'state_id' => $input['state_id'], 'city_id' => $input['city_id']]);
             if ($request->file('logo')) {
                 $file = $request->file('logo');
                 $filename = time() . $file->getClientOriginalName();

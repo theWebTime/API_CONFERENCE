@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->string('primary_color', 10);
+            $table->string('secondary_color', 10);
             $table->string('domain', 50)->unique();
             $table->string('title', 50)->unique();
             $table->string('date', 30);

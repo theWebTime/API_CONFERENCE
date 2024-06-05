@@ -51,7 +51,7 @@ class ConferenceSpeakerController extends BaseController
             if ($request->file('image')) {
                 $file = $request->file('image');
                 $filename = time() . $file->getClientOriginalName();
-                $file->move(public_path('images/conferenceSchedule'), $filename);
+                $file->move(public_path('images/conferenceSpeaker'), $filename);
                 $updateData['image'] = $filename;
             }
             ConferenceSpeaker::insert($updateData);

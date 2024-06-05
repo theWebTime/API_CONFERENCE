@@ -19,6 +19,7 @@ use App\Http\Controllers\ConferenceImportantDateController;
 use App\Http\Controllers\ConferenceFaqController;
 use App\Http\Controllers\ConferenceOtherInformationController;
 use App\Http\Controllers\ConferencePlanController;
+use App\Http\Controllers\ConferenceAboutUsController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\FiledContactUsController;
 use App\Http\Controllers\SubmitAbstractController;
@@ -185,6 +186,11 @@ Route::group(['middleware' => ['auth:api', 'checkRole:admin,conferenceOwner']], 
         Route::post('/store', [ConferencePlanController::class, 'store']);
         Route::post('/show', [ConferencePlanController::class, 'show']);
         Route::post('/update', [ConferencePlanController::class, 'update']);
+    });
+    // Conference About Us Routes
+    Route::group(['prefix' => '/conference-about-us'], function () {
+        Route::post('/store', [ConferenceAboutUsController::class, 'updateOrCreate']);
+        Route::post('/show', [ConferenceAboutUsController::class, 'show']);
     });
     // Contact Us Routes
     Route::group(['prefix' => '/contact-us'], function () {

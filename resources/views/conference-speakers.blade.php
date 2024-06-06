@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Home Page')
+@section('title', 'Conference Speaker')
 
 @section('content')
 <!-- start page title -->

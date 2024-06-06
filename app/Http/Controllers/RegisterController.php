@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use \Exception;
 use App\Models\Conference;
 use App\Models\Register;
+use App\Models\Country;
 use Illuminate\Support\Facades\Validator;
 use Mail;
 use App\Mail\RegisterMailConference;
@@ -24,39 +25,6 @@ class RegisterController extends BaseController
                 }
             })->orderBy('id', 'DESC')->paginate($request->itemsPerPage ?? 10);
             return $this->sendResponse($data, 'Data retrieved successfully.');
-        } catch (Exception $e) {
-            return $this->sendError('something went wrong!', $e);
-        }
-    }
-
-    public function store(Request $request)
-    {
-        try {
-            $domain = 'https://www.instagram.com/';
-            $data = Conference::where('domain', $domain)->select('id', 'email')->first();
-            $input = $request->all();
-            $validator = Validator::make($input, [
-                'title' => 'required|max:20',
-                'name' => 'required|max:20',
-                'email' => 'required|max:80',
-                'alternative_email' => 'nullable|max:80',
-                'phone_number' => 'required|max:20',
-                'whatsapp_number' => 'nullable|max:20',
-                'institution' => 'required|max:50',
-                'country_id' => 'required|exists:countries,id',
-            ]);
-            if ($validator->fails()) {
-                return $this->sendError('Validation Error.', $validator->errors());
-            }
-            $updateData = (['conferences_id' => $data->id, 'title' => $input['title'], 'name' => $input['name'], 'email' => $input['email'], 'alternative_email' => $input['alternative_email'], 'phone_number' => $input['phone_number'], 'whatsapp_number' => $input['whatsapp_number'], 'institution' => $input['institution'], 'country_id' => $input['country_id']]);
-            $register = Register::create($updateData);
-            $mailData = [
-                'title' => 'Mail from Register Lead',
-                'data' =>  $register
-            ];
-            // dd($mailData);
-            Mail::to($data->email)->send(new RegisterMailConference($mailData));
-            return $this->sendResponse([], 'Thank you for submitting your Info.');
         } catch (Exception $e) {
             return $this->sendError('something went wrong!', $e);
         }

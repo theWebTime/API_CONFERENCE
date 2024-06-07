@@ -4,7 +4,7 @@
 
 @section('content')
 <!-- start page title -->
-<section class="page-title-big-typography bg-dark-gray ipad-top-space-margin" data-parallax-background-ratio="0.5" style="background-image: url(images/demo-conference-page-bg.jpg)">
+<section class="page-title-big-typography bg-base-color ipad-top-space-margin" data-parallax-background-ratio="0.5" style="background-image: url(images/demo-conference-page-bg.jpg)">
     <div class="container">
         <div class="row align-items-center justify-content-center extra-small-screen">
             <div class="col-lg-8 text-center page-title-extra-large">
@@ -33,11 +33,9 @@
                                     <!-- start accordion item -->
                                     <div class="accordion-item active-accordion">
                                         <div class="accordion-header border-bottom border-color-extra-medium-gray pt-0">
-                                            <a href="#" data-bs-toggle="collapse" data-bs-target="#accordion-style-01-01" aria-expanded="true" data-bs-parent="#accordion-style-01">
-                                                <div class="accordion-title mb-0 position-relative text-dark-gray">
-                                                    <i class="feather icon-feather-minus"></i><span class="fw-500 fs-18">{{$data->question}}</span>
-                                                </div>
-                                            </a>
+                                            <div class="accordion-title mb-0 position-relative text-dark-gray">
+                                                <i class="feather icon-feather-minus"></i><span class="fw-500 fs-18">{{$data->question}}</span>
+                                            </div>
                                         </div>
                                         <div id="accordion-style-01-01" class="accordion-collapse collapse show" data-bs-parent="#accordion-style-01">
                                             <div class="accordion-body last-paragraph-no-margin border-bottom border-color-light-medium-gray">

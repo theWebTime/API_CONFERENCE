@@ -137,6 +137,15 @@
                     {{ session('success') }}
                 </div>
                 @endif
+                @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
                 <!-- start contact form -->
                 <form action="{{ route('register.data') }}" method="POST" class="row contact-form-style-02">
                     @csrf
@@ -153,13 +162,13 @@
                         <input class="bg-transparent border-color-transparent-white-light form-control" type="email" id="alternative_email" name="alternative_email" placeholder="Your Alternative email address" />
                     </div>
                     <div class="col-md-6 mb-30px">
-                        <input class="bg-transparent border-color-transparent-white-light form-control required" type="tel" id="phone" name="phone_number" placeholder="Your phone" />
+                        <input class="bg-transparent border-color-transparent-white-light form-control required" type="number" id="phone" name="phone_number" placeholder="Your phone number*" />
                     </div>
                     <div class="col-md-6 mb-30px">
-                        <input class="bg-transparent border-color-transparent-white-light form-control" type="tel" id="whatsapp_number" name="whatsapp_number" placeholder="Your whatsapp phone" />
+                        <input class="bg-transparent border-color-transparent-white-light form-control" type="number" id="whatsapp_number" name="whatsapp_number" placeholder="Your whatsapp number" />
                     </div>
                     <div class="col-md-6 mb-30px">
-                        <input class="bg-transparent border-color-transparent-white-light form-control required" type="text" id="institution" name="institution" placeholder="Your Institution" />
+                        <input class="bg-transparent border-color-transparent-white-light form-control required" type="text" id="institution" name="institution" placeholder="Your Institution*" />
                     </div>
                     <div class="col-md-6 mb-30px">
                         <select class="bg-transparent border-color-transparent-white-light form-control required" id="country_id" name="country_id">
@@ -186,85 +195,6 @@
                     </div>
                 </form>
                 <!-- end contact form -->
-            </div>
-        </div>
-    </div>
-</section>
-<!-- end section -->
-<!-- start section -->
-<section class="bg-dark-midnight-blue border-bottom border-color-transparent-white-light">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6 md-mb-50px position-relative" data-anime='{ "effect": "slide", "color": "#ffffff", "direction":"lr", "easing": "easeOutQuad", "delay":50}'>
-                <img class="w-100 border-radius-5px" src="https://via.placeholder.com/600x600" alt="">
-                <a href="https://www.youtube.com/watch?v=cfXHhfNy7tU" class="z-index-0 absolute-middle-center d-inline-block text-center bg-white rounded-circle video-icon-box video-icon-large popup-youtube" data-anime='{ "opacity": [0,1], "duration": 600, "delay": 500, "staggervalue": 300, "easing": "easeOutQuad" }'>
-                    <span>
-                        <span class="video-icon bg-white">
-                            <i class="feather icon-feather-play text-dark-gray"></i>
-                            <span class="video-icon-sonar">
-                                <span class="video-icon-sonar-bfr bg-white opacity-9"></span>
-                                <span class="video-icon-sonar-afr bg-white"></span>
-                            </span>
-                        </span>
-                    </span>
-                </a>
-            </div>
-            <div class="col-xl-5 offset-xl-1 col-lg-6" data-anime='{ "el": "childs", "translateY": [50, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'>
-                <h2 class="alt-font text-white fw-500 ls-minus-2px mb-35px lg-mb-30px"><span class="w-20px h-4px d-inline-block bg-base-color me-10px"></span>Frequently asked and question.</h2>
-                <div class="row justify-content-center">
-                    <div class="col-12">
-                        <div class="accordion accordion-style-02" id="accordion-style-02" data-active-icon="icon-feather-minus" data-inactive-icon="icon-feather-plus">
-                            <!-- start accordion item -->
-                            <div class="accordion-item active-accordion">
-                                <div class="accordion-header border-bottom border-color-transparent-white-light">
-                                    <a href="" data-bs-toggle="collapse" data-bs-target="#accordion-style-02-01" aria-expanded="true" data-bs-parent="#accordion-style-02">
-                                        <div class="accordion-title mb-0 position-relative">
-                                            <i class="feather icon-feather-minus body-text-color"></i><span class="fs-18 text-white">Can i try event advice for free?</span>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div id="accordion-style-02-01" class="accordion-collapse collapse show" data-bs-parent="#accordion-style-02">
-                                    <div class="accordion-body last-paragraph-no-margin border-bottom border-color-transparent-white-light text-medium-gray">
-                                        <p>Lorem ipsum is simply dummy text of typesetting industry. standard dummy text.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end accordion item -->
-                            <!-- start accordion item -->
-                            <div class="accordion-item">
-                                <div class="accordion-header border-bottom border-color-transparent-white-light">
-                                    <a href="" data-bs-toggle="collapse" data-bs-target="#accordion-style-02-02" aria-expanded="false" data-bs-parent="#accordion-style-02">
-                                        <div class="accordion-title mb-0 position-relative">
-                                            <i class="feather icon-feather-plus body-text-color"></i><span class="fs-18 text-white">What are my payment options?</span>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div id="accordion-style-02-02" class="accordion-collapse collapse" data-bs-parent="#accordion-style-02">
-                                    <div class="accordion-body last-paragraph-no-margin border-bottom border-color-transparent-white-light text-medium-gray">
-                                        <p>Lorem ipsum is simply dummy text of typesetting industry. standard dummy text.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end accordion item -->
-                            <!-- start accordion item -->
-                            <div class="accordion-item">
-                                <div class="accordion-header border-bottom border-color-transparent">
-                                    <a href="" data-bs-toggle="collapse" data-bs-target="#accordion-style-02-03" aria-expanded="false" data-bs-parent="#accordion-style-02">
-                                        <div class="accordion-title mb-0 position-relative">
-                                            <i class="feather icon-feather-plus body-text-color"></i><span class="fs-18 text-white">Is it safe to provide credit card data?</span>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div id="accordion-style-02-03" class="accordion-collapse collapse" data-bs-parent="#accordion-style-02">
-                                    <div class="accordion-body last-paragraph-no-margin border-bottom border-color-transparent text-medium-gray">
-                                        <p>Lorem ipsum is simply dummy text of typesetting industry. standard dummy text.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end accordion item -->
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

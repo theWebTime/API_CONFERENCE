@@ -9,8 +9,8 @@
         <div class="row align-items-center justify-content-center extra-small-screen">
             <div class="col-lg-8 text-center page-title-extra-large">
                 <h1 class="mb-0 text-white alt-font fw-600 ls-minus-5px">
-                    <span class="d-block text-outline text-outline-width-2px text-outline-color-white" data-fancy-text='{ "string": ["Conference"], "duration": 500, "delay": 0, "speed": 50, "clipPath": ["inset(0 500px 0 0)", "inset(0px -5px 0px 0px)"], "easing": "easeOutCubic" }'></span>
-                    <span data-anime='{ "opacity": [0, 1], "easing": "easeOutQuad", "duration": 1000, "delay": 300 }'>Submit Abstract</span>
+                    <span class="d-block text-outline text-outline-width-2px text-outline-color-white" data-fancy-text='{ "string": ["Submit Abstract"], "duration": 500, "delay": 0, "speed": 50, "clipPath": ["inset(0 500px 0 0)", "inset(0px -5px 0px 0px)"], "easing": "easeOutCubic" }'></span>
+                    <!-- <span data-anime='{ "opacity": [0, 1], "easing": "easeOutQuad", "duration": 1000, "delay": 300 }'>Submit Abstract</span> -->
                 </h1>
             </div>
         </div>
@@ -122,11 +122,6 @@
     </div>
 </section>
 <!-- end section -->
-@if(session('success'))
-<div class="alert alert-success">
-    {{ session('success') }}
-</div>
-@endif
 <!-- start section -->
 <section class="bg-midnight-blue pt-0">
     <div class="container">
@@ -138,6 +133,20 @@
         <div class="row row-cols-md-1 justify-content-center" data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay": 100, "staggervalue": 300, "easing": "easeOutQuad" }'>
             <div class="col-xl-9 col-lg-11">
                 <!-- start contact form -->
+                @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+                @endif
+                @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
                 <form action="{{ route('submit.data') }}" method="POST" class="row contact-form-style-02" enctype="multipart/form-data">
                     @csrf
                     <div class="col-md-6 mb-30px">
@@ -153,13 +162,13 @@
                         <input class="bg-transparent border-color-transparent-white-light form-control" type="email" id="alternative_email" name="alternative_email" placeholder="Your Alternative email address" />
                     </div>
                     <div class="col-md-6 mb-30px">
-                        <input class="bg-transparent border-color-transparent-white-light form-control required" type="tel" id="phone" name="phone_number" placeholder="Your phone" />
+                        <input class="bg-transparent border-color-transparent-white-light form-control required" type="number" id="phone" name="phone_number" placeholder="Your phone number*" />
                     </div>
                     <div class="col-md-6 mb-30px">
-                        <input class="bg-transparent border-color-transparent-white-light form-control" type="tel" id="whatsapp_number" name="whatsapp_number" placeholder="Your whatsapp phone" />
+                        <input class="bg-transparent border-color-transparent-white-light form-control" type="number" id="whatsapp_number" name="whatsapp_number" placeholder="Your whatsapp number" />
                     </div>
                     <div class="col-md-6 mb-30px">
-                        <input class="bg-transparent border-color-transparent-white-light form-control required" type="text" id="organization" name="organization" placeholder="Your organization" />
+                        <input class="bg-transparent border-color-transparent-white-light form-control required" type="text" id="organization" name="organization" placeholder="Your organization*" />
                     </div>
                     <div class="col-md-6 mb-30px">
                         <select class="bg-transparent border-color-transparent-white-light form-control required" id="country_id" name="country_id">
@@ -170,19 +179,19 @@
                         </select>
                     </div>
                     <div class="col-md-6 mb-30px">
-                        <input class="bg-transparent border-color-transparent-white-light form-control required" type="text" id="city" name="city" placeholder="Your city" />
+                        <input class="bg-transparent border-color-transparent-white-light form-control required" type="text" id="city" name="city" placeholder="Your city*" />
                     </div>
                     <div class="col-md-6 mb-30px">
-                        <input class="bg-transparent border-color-transparent-white-light form-control required" type="text" id="interested_in" name="interested_in" placeholder="Your Interest" />
+                        <input class="bg-transparent border-color-transparent-white-light form-control required" type="text" id="interested_in" name="interested_in" placeholder="Your Interest*" />
                     </div>
                     <div class="col-md-6 mb-30px">
-                        <input class="bg-transparent border-color-transparent-white-light form-control required" type="text" id="abstract_title" name="abstract_title" placeholder="Abstract Title" />
+                        <input class="bg-transparent border-color-transparent-white-light form-control required" type="text" id="abstract_title" name="abstract_title" placeholder="Abstract Title*" />
                     </div>
                     <div class="col-md-12 mb-40px">
                         <textarea class="bg-transparent border-color-transparent-white-light form-control required" cols="40" rows="4" id="message" name="message" placeholder="Your message"></textarea>
                     </div>
                     <div class="col-md-6 mb-30px">
-                        <input class="bg-transparent border-color-transparent-white-light form-control required" type="file" id="submit_abstract_file" name="submit_abstract_file" placeholder="Your Abstract File" />
+                        <input class="bg-transparent border-color-transparent-white-light form-control required" type="file" id="submit_abstract_file" name="submit_abstract_file" placeholder="Your Abstract File*" />
                     </div>
                     <div class="col-lg-7 col-md-8">
                         <p class="mb-0 lh-30 text-center text-md-start fs-16">We are committed to protecting your privacy. We will never collect information about you without your explicit consent.</p>

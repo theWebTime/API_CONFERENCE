@@ -63,6 +63,20 @@
                             <i class="fa-solid fa-angle-down dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <li>
+                                    <a href="{{ route('committee-member') }}">
+                                        <div class="submenu-icon-content">
+                                            <span>Committee Member</span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('gallery') }}">
+                                        <div class="submenu-icon-content">
+                                            <span>Gallery</span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
                                     <a href="{{ route('about-us') }}">
                                         <div class="submenu-icon-content">
                                             <span>About Us</span>
@@ -79,7 +93,7 @@
                                 <li>
                                     <a href="{{ route('submit-abstract') }}">
                                         <div class="submenu-icon-content">
-                                            <span>Submit Abstract Page</span>
+                                            <span>Submit Abstract</span>
                                         </div>
                                     </a>
                                 </li>

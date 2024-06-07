@@ -26,6 +26,8 @@ Route::get('/venue-detail', [WebCommonController::class, 'venueDetail'])->name('
 Route::get('/guideline', [WebCommonController::class, 'guideline'])->name('guideline');
 Route::get('/faq', [WebCommonController::class, 'faq'])->name('faq');
 Route::get('/conference-brochure', [WebCommonController::class, 'conferenceBrochure'])->name('conference-brochure');
+Route::get('/committee-member', [WebCommonController::class, 'committeeMember'])->name('committee-member');
+Route::get('/gallery', [WebCommonController::class, 'gallery'])->name('gallery');
 Route::get('/about-us', [WebCommonController::class, 'aboutUs'])->name('about-us');
 Route::get('/contact-us', [WebCommonController::class, 'contactUs'])->name('contact-us');
 Route::get('/submit-abstract', [WebCommonController::class, 'submitAbstractPage'])->name('submit-abstract');

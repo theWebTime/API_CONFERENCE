@@ -174,7 +174,7 @@
                     </div>
                 </div>
                 <!-- end features box item -->
-                <a href="demo-conference-about-event.html" class="btn btn-large btn-dark-gray btn-hover-animation btn-round-edge btn-box-shadow align-self-center">
+                <a href="{{route('about-us')}}" class="btn btn-large btn-dark-gray btn-hover-animation btn-round-edge btn-box-shadow align-self-center">
                     <span>
                         <span class="btn-text">About conference</span>
                         <span class="btn-icon"><i class="fa-solid fa-arrow-right"></i></span>
@@ -185,46 +185,49 @@
     </div>
 </section>
 <!-- end section -->
-<!-- start section of Conference Committee-->
+<!-- start section of Conference Committee Member-->
 @if(count($conferenceCommittee) > 0)
 <section class="bg-midnight-blue background-position-left-bottom background-no-repeat sm-background-image-none" style="background-image: url('images/demo-conference-experts-bg.png')">
     <div class="container">
         <div class="row justify-content-center align-items-center mb-6 text-center text-lg-start">
             <div class="col-xxl-8 col-lg-7 md-mb-20px" data-anime='{ "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'>
-                <h2 class="alt-font text-white fw-500 ls-minus-2px mb-0"><span class="w-20px h-4px d-inline-block bg-base-color me-10px"></span>Committee Member</h2>
+                <h2 class="alt-font text-white fw-500 ls-minus-2px mb-0">
+                    <span class="w-20px h-4px d-inline-block bg-base-color me-10px"></span>Committee Member
+                </h2>
             </div>
             <div class="col-xxl-4 col-lg-5 col-md-8 col-sm-10 last-paragraph-no-margin" data-anime='{ "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'>
-                <p>Lorem ipsum dolor to consectetur adipiscing elit eiusmod tempor incididunt labore.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
             </div>
         </div>
-        <div class="row row-cols-1 row-cols-lg-4 row-cols-sm-2 justify-content-center" data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 1200, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4 justify-content-center">
             <!-- start team member item -->
             @foreach($conferenceCommittee as $data)
             <div class="col text-center team-style-05 md-mb-50px">
                 <div class="position-relative mb-25px">
-                    <img class="border-radius-4px" src="{{$data->image}}" width="200" height="200" alt="" />
-                    <div class="w-100 h-100 d-flex flex-column justify-content-end align-items-center p-40px team-content bg-base-color-transparent border-radius-4px">
-                        <div class="text-white w-75 md-w-65 absolute-middle-center opacity-7">Contact Me</div>
-                        <div class="social-icon fs-19">
+                    <img class="border-radius-4px w-100" src="{{$data->image}}" alt="" />
+                    <div class="w-100 h-100 d-flex flex-column justify-content-end align-items-center p-3 team-content bg-base-color-transparent border-radius-4px position-absolute top-0 start-0">
+                        <div class="text-white opacity-7">Contact Me</div>
+                        <div class="social-icon fs-19 mt-2">
                             @if($data->facebook_link)
-                            <a href="{{$data->facebook_link}}" target="_blank" class="text-white"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="{{$data->facebook_link}}" target="_blank" class="text-white mx-1"><i class="fa-brands fa-facebook-f"></i></a>
                             @endif
                             @if($data->linkedin_link)
-                            <a href="{{$data->linkedin_link}}" target="_blank" class="text-white"><i class="fa-brands fa-linkedin"></i></a>
+                            <a href="{{$data->linkedin_link}}" target="_blank" class="text-white mx-1"><i class="fa-brands fa-linkedin"></i></a>
                             @endif
                             @if($data->x_Link)
-                            <a href="{{$data->x_Link}}" target="_blank" class="text-white"><i class="fa-brands fa-twitter"></i></a>
+                            <a href="{{$data->x_Link}}" target="_blank" class="text-white mx-1"><i class="fa-brands fa-twitter"></i></a>
                             @endif
-
                         </div>
                     </div>
                 </div>
-                <a href="demo-conference-speaker-details.html" class="fs-18 alt-font text-white text-base-color-hover vertical-align-top">{{$data->name}}</a>
-                <span class="fs-16 d-block lh-normal">{{$data->designation}}</span>
+                <a href="demo-conference-speaker-details.html" class="fs-18 alt-font text-white text-base-color-hover d-block mb-1">{{$data->name}}</a>
+                <span class="fs-16 d-block lh-normal text-white">{{$data->designation}}</span>
             </div>
             @endforeach
             <!-- end team member item -->
-            <a href="{{route('register')}}" class="btn btn-extra-large btn-base-color btn-hover-animation btn-rounded btn-box-shadow align-self-center lg-mt-20px sm-mt-5px xs-mt-20px" data-anime='{ "opacity": [0, 1], "translateY": [50, 0], "easing": "easeOutCubic", "duration": 1000, "delay": 800 }'>
+        </div>
+        <div class="text-center mt-4">
+            <a href="{{route('committee-member')}}" class="btn btn-extra-large btn-base-color btn-hover-animation btn-rounded btn-box-shadow align-self-center lg-mt-20px sm-mt-5px xs-mt-20px" data-anime='{ "opacity": [0, 1], "translateY": [50, 0], "easing": "easeOutCubic", "duration": 1000, "delay": 800 }'>
                 <span>
                     <span class="btn-text">Show All</span>
                     <span class="btn-icon"><i class="fa-solid fa-arrow-right"></i></span>
@@ -241,31 +244,40 @@
     <div class="container">
         <div class="row justify-content-center align-items-center mb-6 text-center text-lg-start">
             <div class="col-xxl-8 col-lg-7 md-mb-20px" data-anime='{ "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'>
-                <h2 class="alt-font text-white fw-500 ls-minus-2px mb-0"><span class="w-20px h-4px d-inline-block bg-base-color me-10px"></span>Gallery</h2>
+                <h2 class="alt-font text-white fw-500 ls-minus-2px mb-0">
+                    <span class="w-20px h-4px d-inline-block bg-base-color me-10px"></span>Gallery
+                </h2>
             </div>
         </div>
         <div class="row">
             <div class="col-12">
-                <ul class="image-gallery-style-03 gallery-wrapper grid-loading grid grid-3col xxl-grid-3col xl-grid-3col lg-grid-3col md-grid-2col sm-grid-2col xs-grid-1col gutter-extra-large text-center" data-anime='{ "el": "childs", "translateY": [50, 0], "opacity": [0,1], "duration": 1200, "delay": 0, "staggervalue": 150, "easing": "easeOutQuad" }'>
-                    <li class="grid-sizer"></li>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
                     @foreach($conferenceGallery as $data)
-                    <!-- start portfolio item -->
-                    <li class="grid-item transition-inner-all">
-                        <div class="gallery-box overflow-hidden">
-                            <div class="position-relative gallery-image bg-base-color">
-                                <img src="{{$data->data}}" alt="" />
+                    <!-- start gallery item -->
+                    <div class="col">
+                        <div class="card h-100">
+                            <div class="gallery-box overflow-hidden position-relative">
+                                <img src="{{$data->data}}" class="card-img-top img-fluid" alt="Gallery Image">
                             </div>
                         </div>
-                    </li>
-                    <!-- end portfolio item -->
+                    </div>
+                    <!-- end gallery item -->
                     @endforeach
-                </ul>
+                </div>
+                <div class="text-center mt-4">
+                    <a href="{{route('gallery')}}" class="btn btn-extra-large btn-base-color btn-hover-animation btn-rounded btn-box-shadow align-self-center lg-mt-20px sm-mt-5px xs-mt-20px" data-anime='{ "opacity": [0, 1], "translateY": [50, 0], "easing": "easeOutCubic", "duration": 1000, "delay": 800 }'>
+                        <span>
+                            <span class="btn-text">Show All</span>
+                            <span class="btn-icon"><i class="fa-solid fa-arrow-right"></i></span>
+                        </span>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </section>
-<!-- end section -->
 @endif
+<!-- end section -->
 <!-- start section -->
 <section class="p-0 bg-midnight-blue border-bottom border-color-transparent-white-light background-position-left-bottom background-no-repeat overflow-hidden" style="background-image: url('images/demo-conference-schedule-bg.png')">
     <div class="container-fluid">
@@ -349,41 +361,42 @@
     <div class="container">
         <div class="row justify-content-center align-items-center mb-6 text-center text-lg-start">
             <div class="col-xxl-8 col-lg-7 md-mb-20px" data-anime='{ "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'>
-                <h2 class="alt-font text-white fw-500 ls-minus-2px mb-0"><span class="w-20px h-4px d-inline-block bg-base-color me-10px"></span>Committee Speaker</h2>
+                <h2 class="alt-font text-white fw-500 ls-minus-2px mb-0">
+                    <span class="w-20px h-4px d-inline-block bg-base-color me-10px"></span>Committee Speaker
+                </h2>
             </div>
             <div class="col-xxl-4 col-lg-5 col-md-8 col-sm-10 last-paragraph-no-margin" data-anime='{ "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'>
-                <p>Lorem ipsum dolor to consectetur adipiscing elit eiusmod tempor incididunt labore.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
             </div>
         </div>
-        <div class="row row-cols-1 row-cols-lg-4 row-cols-sm-2 justify-content-center" data-anime='{ "el": "childs", "translateY": [30, 0], "opacity": [0,1], "duration": 1200, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4 justify-content-center">
             <!-- start team member item -->
             @foreach($conferenceSpeaker as $data)
             <div class="col text-center team-style-05 md-mb-50px">
                 <div class="position-relative mb-25px">
-                    <img class="border-radius-4px" src="{{$data->image}}" width="200" height="200" alt="" />
-                    <div class="w-100 h-100 d-flex flex-column justify-content-end align-items-center p-40px team-content bg-base-color-transparent border-radius-4px">
-                        <div class="text-white w-75 md-w-65 absolute-middle-center opacity-7">Contact Me</div>
-                        <div class="social-icon fs-19">
+                    <img class="border-radius-4px w-100" src="{{$data->image}}" alt="" />
+                    <div class="w-100 h-100 d-flex flex-column justify-content-end align-items-center p-3 team-content bg-base-color-transparent border-radius-4px position-absolute top-0 start-0">
+                        <div class="text-white opacity-7">Contact Me</div>
+                        <div class="social-icon fs-19 mt-2">
                             @if($data->facebook_link)
-                            <a href="{{$data->facebook_link}}" target="_blank" class="text-white"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="{{$data->facebook_link}}" target="_blank" class="text-white mx-1"><i class="fa-brands fa-facebook-f"></i></a>
                             @endif
                             @if($data->linkedin_link)
-
-                            <a href="{{$data->linkedin_link}}" target="_blank" class="text-white"><i class="fa-brands fa-linkedin"></i></a>
+                            <a href="{{$data->linkedin_link}}" target="_blank" class="text-white mx-1"><i class="fa-brands fa-linkedin"></i></a>
                             @endif
                             @if($data->x_Link)
-
-                            <a href="{{$data->x_Link}}" target="_blank" class="text-white"><i class="fa-brands fa-twitter"></i></a>
+                            <a href="{{$data->x_Link}}" target="_blank" class="text-white mx-1"><i class="fa-brands fa-twitter"></i></a>
                             @endif
-
                         </div>
                     </div>
                 </div>
-                <a href="demo-conference-speaker-details.html" class="fs-18 alt-font text-white text-base-color-hover vertical-align-top">{{$data->name}}</a>
-                <span class="fs-16 d-block lh-normal">{{$data->designation}}</span>
+                <a href="demo-conference-speaker-details.html" class="fs-18 alt-font text-white text-base-color-hover d-block mb-1">{{$data->name}}</a>
+                <span class="fs-16 d-block lh-normal text-white">{{$data->designation}}</span>
             </div>
             @endforeach
             <!-- end team member item -->
+        </div>
+        <div class="text-center mt-4">
             <a href="{{route('speaker')}}" class="btn btn-extra-large btn-base-color btn-hover-animation btn-rounded btn-box-shadow align-self-center lg-mt-20px sm-mt-5px xs-mt-20px" data-anime='{ "opacity": [0, 1], "translateY": [50, 0], "easing": "easeOutCubic", "duration": 1000, "delay": 800 }'>
                 <span>
                     <span class="btn-text">Show All</span>
@@ -553,7 +566,7 @@
     </div>
 </section>
 <!-- end section -->
-<!-- start section -->
+<!-- start section of Conference Program -->
 @if(count($conferenceProgram) > 0)
 <section class="bg-midnight-blue background-position-left-bottom background-no-repeat sm-background-image-none" style="background-image: url('images/demo-conference-experts-bg.png')">
     <div class="container">
@@ -576,6 +589,14 @@
             </div>
             @endforeach
             <!-- end features box item -->
+        </div>
+        <div class="text-center mt-4">
+            <a href="{{route('program')}}" class="btn btn-extra-large btn-base-color btn-hover-animation btn-rounded btn-box-shadow align-self-center lg-mt-20px sm-mt-5px xs-mt-20px" data-anime='{ "opacity": [0, 1], "translateY": [50, 0], "easing": "easeOutCubic", "duration": 1000, "delay": 800 }'>
+                <span>
+                    <span class="btn-text">Show All</span>
+                    <span class="btn-icon"><i class="fa-solid fa-arrow-right"></i></span>
+                </span>
+            </a>
         </div>
     </div>
 </section>

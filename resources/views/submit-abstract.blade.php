@@ -125,11 +125,6 @@
 <!-- start section -->
 <section class="bg-midnight-blue pt-0">
     <div class="container">
-        <div class="row justify-content-center mb-3 xs-mb-8" data-anime='{ "translateY": [50, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'>
-            <div class="col-xl-7 col-lg-8 text-center">
-                <h2 class="alt-font text-white fw-500 ls-minus-2px"><span class="w-20px h-4px d-inline-block bg-base-color me-10px"></span>Register now and be a part of the conference.</h2>
-            </div>
-        </div>
         <div class="row row-cols-md-1 justify-content-center" data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay": 100, "staggervalue": 300, "easing": "easeOutQuad" }'>
             <div class="col-xl-9 col-lg-11">
                 <!-- start contact form -->

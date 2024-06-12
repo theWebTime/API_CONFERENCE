@@ -127,7 +127,7 @@
     <div class="container">
         <div class="row justify-content-center mb-3 xs-mb-8" data-anime='{ "translateY": [50, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'>
             <div class="col-xl-7 col-lg-8 text-center">
-                <h2 class="alt-font text-white fw-500 ls-minus-2px"><span class="w-20px h-4px d-inline-block bg-base-color me-10px"></span>Register now and be a part of the conference.</h2>
+                <h2 class="alt-font text-white fw-500 ls-minus-2px"><span class="w-20px h-4px d-inline-block bg-base-color me-10px"></span>Online Registration.</h2>
             </div>
         </div>
         <div class="row row-cols-md-1 justify-content-center" data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay": 100, "staggervalue": 300, "easing": "easeOutQuad" }'>
@@ -178,6 +178,35 @@
                             @endforeach
                         </select>
                     </div>
+                        <div class="row row-cols-1 row-cols-lg-3 align-items-center justify-content-center">
+                            @foreach($conferencePlan as $data)
+                            <!-- start pricing item -->
+                            <div class="col-lg-4 col-md-8 px-md-0 pricing-table-style-02 position-relative transition-inner-all md-mb-30px" data-anime='{ "translateX": [30, 0], "opacity": [0,1], "duration": 1200, "delay": 0, "staggervalue": 150, "easing": "easeOutQuad" }'>
+                                <div class="pricing-table border border-color-transparent-white-light text-center border-radius-6px pt-17 pb-17 ps-15 pe-15 lg-ps-13 lg-pe-13 box-shadow-large">
+                                    <div class="pricing-header">
+                                        <i class="line-icon-Boy align-middle text-center text-base-color icon-extra-large mb-20px"></i>
+                                        <div class="alt-font text-uppercase fs-16 fw-500">{{$data->title}}</div>
+                                        <h3 class="text-white mb-0 fw-500">${{ rtrim(rtrim($data->amount, '0'), '.') }}</h3>
+                                    </div>
+                                    <div class="pricing-body pt-20px pb-30px">
+                                        <ul class="list-style-01 ps-0 mb-0">
+                                            <li class="border-color-transparent-white-light pt-10px pb-10px"><span class="text-white">{{$data->description}}</span></li>
+                                        </ul>
+                                    </div>
+                                    <div class="pricing-footer">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="plan_id" id="package{{ $loop->index }}" value="{{ $data->id }}">
+                                            <label class="form-check-label text-white" for="package{{ $loop->index }}">
+                                                Choose package
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div></div>
+                                </div>
+                            </div>
+                            <!-- end pricing item -->
+                            @endforeach
+                        </div>
                     <div class="col-lg-7 col-md-8">
                         <p class="mb-0 lh-30 text-center text-md-start fs-16">We are committed to protecting your privacy. We will never collect information about you without your explicit consent.</p>
                     </div>

@@ -21,13 +21,6 @@
 @if(count($conferenceGallery) > 0)
 <section class="bg-dark-midnight-blue background-position-right-bottom background-no-repeat sm-background-image-none" style="background-image: url('images/demo-conference-about-bg.png')">
     <div class="container">
-        <div class="row justify-content-center align-items-center mb-6 text-center text-lg-start">
-            <div class="col-xxl-8 col-lg-7 md-mb-20px" data-anime='{ "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'>
-                <h2 class="alt-font text-white fw-500 ls-minus-2px mb-0">
-                    <span class="w-20px h-4px d-inline-block bg-base-color me-10px"></span>Gallery
-                </h2>
-            </div>
-        </div>
         <div class="row">
             <div class="col-12">
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">

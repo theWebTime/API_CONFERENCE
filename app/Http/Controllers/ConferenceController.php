@@ -51,6 +51,7 @@ class ConferenceController extends BaseController
                 'email' => 'required|max:80|unique:conferences',
                 'password' => 'required|min:6|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/|max:20',
                 'abstract_file_sample' => 'required|mimes:pdf|max:30000',
+                'brochure' => 'required|mimes:pdf|max:30000',
                 'conference_tags_id' => 'required|exists:conference_tags,id',
                 'conference_types_id' => 'required|exists:conference_types,id',
                 'country_id' => 'required|exists:countries,id',
@@ -74,6 +75,12 @@ class ConferenceController extends BaseController
                 $file->move(public_path('file/abstractFileSample'), $filename);
                 $updateData['abstract_file_sample'] = $filename;
             }
+            if ($request->file('brochure')) {
+                $file = $request->file('brochure');
+                $filename = time() . $file->getClientOriginalName();
+                $file->move(public_path('file/brochure'), $filename);
+                $updateData['brochure'] = $filename;
+            }
             // Insert Conference in conferences Table
             $data = Conference::insert($updateData);
             DB::commit();
@@ -95,7 +102,7 @@ class ConferenceController extends BaseController
             if ($validator->fails()) {
                 return $this->sendError('Validation Error.', $validator->errors());
             }
-            $data = Conference::where('id', $request->input('conference_id'))->select('id', 'user_id', 'primary_color', 'secondary_color', 'domain', 'title', 'date', 'address', 'iframe', 'contact_number1', 'contact_number2', 'wp_number', 'email', 'logo', 'abstract_file_sample', 'status', 'conference_tags_id', 'conference_types_id', 'country_id', 'state_id', 'city_id')->first();
+            $data = Conference::where('id', $request->input('conference_id'))->select('id', 'user_id', 'primary_color', 'secondary_color', 'domain', 'title', 'date', 'address', 'iframe', 'contact_number1', 'contact_number2', 'wp_number', 'email', 'logo', 'abstract_file_sample', 'brochure', 'status', 'conference_tags_id', 'conference_types_id', 'country_id', 'state_id', 'city_id')->first();
             if (is_null($data)) {
                 return $this->sendError('Data not found.');
             }
@@ -125,6 +132,7 @@ class ConferenceController extends BaseController
                 'wp_number' => 'required|max:20',
                 'email' => 'required|max:80',
                 'abstract_file_sample' => 'nullable|mimes:pdf|max:30000',
+                'brochure' => 'required|mimes:pdf|max:30000',
                 'conference_tags_id' => 'required|exists:conference_tags,id',
                 'conference_types_id' => 'required|exists:conference_types,id',
                 'country_id' => 'required|exists:countries,id',
@@ -147,6 +155,12 @@ class ConferenceController extends BaseController
                 $filename = time() . $file->getClientOriginalName();
                 $file->move(public_path('file/abstractFileSample'), $filename);
                 $updateData['abstract_file_sample'] = $filename;
+            }
+            if ($request->file('brochure')) {
+                $file = $request->file('brochure');
+                $filename = time() . $file->getClientOriginalName();
+                $file->move(public_path('file/brochure'), $filename);
+                $updateData['brochure'] = $filename;
             }
             // Update Conference in conferences Table
             Conference::where('id', $request->input('conference_id'))->update($updateData);

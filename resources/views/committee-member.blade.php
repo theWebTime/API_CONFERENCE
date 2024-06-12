@@ -32,16 +32,6 @@
 @if(count($conferenceCommitteeMember) > 0)
 <section class="bg-midnight-blue background-position-left-bottom background-no-repeat sm-background-image-none" style="background-image: url('images/demo-conference-experts-bg.png')">
     <div class="container">
-        <div class="row justify-content-center align-items-center mb-6 text-center text-lg-start">
-            <div class="col-xxl-8 col-lg-7 md-mb-20px" data-anime='{ "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'>
-                <h2 class="alt-font text-white fw-500 ls-minus-2px mb-0">
-                    <span class="w-20px h-4px d-inline-block bg-base-color me-10px"></span>Committee Member
-                </h2>
-            </div>
-            <div class="col-xxl-4 col-lg-5 col-md-8 col-sm-10 last-paragraph-no-margin" data-anime='{ "translateY": [30, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            </div>
-        </div>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4 justify-content-center">
             <!-- start team member item -->
             @foreach($conferenceCommitteeMember as $data)

@@ -14,6 +14,8 @@ use App\Models\ConferenceAboutUs;
 use App\Models\ConferenceMediaPartner;
 use App\Models\ConferenceProgram;
 use App\Models\ConferenceFaq;
+use App\Models\ConferencePlan;
+use App\Models\ConferencePayment;
 use App\Models\Country;
 use App\Models\City;
 use Mail;
@@ -24,6 +26,8 @@ use App\Models\Register;
 use App\Models\FiledContactUs;
 use App\Models\SubmitAbstract;
 use Illuminate\Support\Facades\Validator;
+use Stripe;
+use Illuminate\Support\Facades\DB;
 
 class WebCommonController extends Controller
 {
@@ -143,15 +147,25 @@ class WebCommonController extends Controller
     public function register()
     {
         try {
+            if (env('APP_ENV') == 'production') {
+                $domain = Request::getHost();
+            } else {
+                $domain = 'https://www.instagram.com/';
+            }
+            $conference = Conference::where('domain', $domain)->first();
+            $conferencePlan = ConferencePlan::where('conferences_id', $conference->id)->where('status', 1)->get();
             $country = Country::select('id', 'name')->get();
-            return view('register', compact('country'));
+            return view('register', compact('country', 'conferencePlan'));
         } catch (Exception $e) {
-            return $this->sendError('something went wrong!', $e);
+             \Log::error('Error occurred during registration: ' . $e->getMessage());
+            // Optionally, you can return a response to the user indicating the error
+            return redirect()->back()->with('error', 'An error occurred during registration. Please try again later.');
         }
     }
 
     public function store(Request $request)
     {
+        DB::beginTransaction();
         try {
             if (env('APP_ENV') == 'production') {
                 $domain = Request::getHost();
@@ -169,22 +183,105 @@ class WebCommonController extends Controller
                 'whatsapp_number' => 'nullable|max:20',
                 'institution' => 'required|max:50',
                 'country_id' => 'required|exists:countries,id',
+                'plan_id' => 'required|exists:conference_plans,id',
             ]);
             if ($validator->fails()) {
                 return redirect()->back()
                     ->withErrors($validator)
                     ->withInput();
             }
-            $updateData = (['conferences_id' => $data->id, 'title' => $input['title'], 'name' => $input['name'], 'email' => $input['email'], 'alternative_email' => $input['alternative_email'], 'phone_number' => $input['phone_number'], 'whatsapp_number' => $input['whatsapp_number'], 'institution' => $input['institution'], 'country_id' => $input['country_id']]);
+            $updateData = [
+                'conferences_id' => $data->id,
+                'title' => $input['title'],
+                'name' => $input['name'],
+                'email' => $input['email'],
+                'alternative_email' => $input['alternative_email'],
+                'phone_number' => $input['phone_number'],
+                'whatsapp_number' => $input['whatsapp_number'],
+                'institution' => $input['institution'],
+                'country_id' => $input['country_id']
+            ];
             $register = Register::create($updateData);
             $mailData = [
                 'title' => 'Mail from Register Lead',
                 'data' =>  $register
             ];
             Mail::to($data->email)->send(new RegisterMailConference($mailData));
-            return redirect()->route('register')->with('success', 'Form submitted successfully!');
+
+            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+            $planData = ConferencePlan::select('title', 'amount')->where('id', $request->plan_id)->first();
+            $amount = round($planData->amount * 100); // Convert amount to cents
+            $response = \Stripe\Checkout\Session::create([
+                'payment_method_types' => ['card'],
+                'line_items' => [[
+                    'price_data' => [
+                        'currency' => 'usd',
+                        'product_data' => [
+                            'name' => $planData->title,
+                        ],
+                        'unit_amount' => $amount,
+                    ],
+                    'quantity' => 1,
+                ]],
+                'mode' => 'payment',
+                'success_url' => route('register.success').'?session_id={CHECKOUT_SESSION_ID}',
+                'cancel_url' => route('register.cancel').'?session_id={CHECKOUT_SESSION_ID}',
+            ]);
+            ConferencePayment::create([
+                'conferences_id' => $data->id,
+                'registers_id' => $register->id,
+                'conference_plans_id' => $request->plan_id,
+                'transaction_id' => $response->id
+            ]);
+            DB::commit();
+            return redirect($response->url);
+        } catch (Exception $e) {
+            DB::rollback();
+            \Log::error('Error occurred during registration: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'An error occurred during registration. Please try again later.');
+        }
+    }
+
+
+    public function registerSuccessStatus(Request $request)
+    {
+        try {
+            $sessionId = $request->query('session_id');
+            if (!$sessionId) {
+                return redirect()->route('register')->with('error', 'Invalid session ID.');
+            }
+
+            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+            $session = \Stripe\Checkout\Session::retrieve($sessionId);
+
+            $transactionId = $session->id;
+            
+            // Assuming 'status' is 1 by default and needs to be updated to 2 on success
+            ConferencePayment::where('transaction_id', $transactionId)->update(['status' => 2]);
+
+            return redirect()->route('register')->with('success', 'Payment Successfully done!');
         } catch (Exception $e) {
             \Log::error('Error occurred during registration: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'An error occurred during registration. Please try again later.');
+        }
+    }
+
+    public function registerCancelStatus(Request $request)
+    {
+        try {
+            $sessionId = $request->query('session_id');
+            if (!$sessionId) {
+                return redirect()->route('register')->with('error', 'Invalid session ID.');
+            }
+
+            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+            $session = \Stripe\Checkout\Session::retrieve($sessionId);
+
+            $transactionId = $session->id;
+            ConferencePayment::where('transaction_id', $transactionId)->update(['status' => 3]);
+            return redirect()->route('register')->with('error', 'Payment Cancelled!');
+        } catch (Exception $e) {
+             \Log::error('Error occurred during registration: ' . $e->getMessage());
             // Optionally, you can return a response to the user indicating the error
             return redirect()->back()->with('error', 'An error occurred during registration. Please try again later.');
         }

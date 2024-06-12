@@ -204,6 +204,10 @@ Route::group(['middleware' => ['auth:api', 'checkRole:admin,conferenceOwner']], 
     Route::group(['prefix' => '/register'], function () {
         Route::get('/index', [RegisterController::class, 'index']);
     });
+    // Register Routes
+    Route::group(['prefix' => '/payment'], function () {
+        Route::get('/index', [RegisterController::class, 'paymentUser']);
+    });
     // Gallery Routes
     Route::group(['prefix' => '/gallery'], function () {
         Route::get('/index', [GalleryController::class, 'index']);

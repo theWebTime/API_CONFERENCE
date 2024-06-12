@@ -35,9 +35,12 @@ Route::get('/register', [WebCommonController::class, 'register'])->name('registe
 
 // Register Route
 Route::post('/register-data', [WebCommonController::class, 'store'])->name('register.data');
-
+Route::get('/register-success', [WebCommonController::class, 'registerSuccessStatus'])->name('register.success');
+Route::get('/register-cancel', [WebCommonController::class, 'registerCancelStatus'])->name('register.cancel');
+// Route::get('stripe/checkout/success', 'stripeCheckoutSuccess')->name('stripe.checkout.success');
 // Filed Contact Us Route 
 Route::post('/filed-contact-us', [WebCommonController::class, 'filedContactUs'])->name('contact.data');
 
 // Submit Abstract Rute
 Route::post('/submit-abstract', [WebCommonController::class, 'submitAbstract'])->name('submit.data');
+

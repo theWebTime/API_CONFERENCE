@@ -9,7 +9,7 @@ class Conference extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'primary_color', 'secondary_color', 'domain', 'title', 'date', 'address', 'iframe', 'contact_number1', 'contact_number2', 'wp_number', 'email', 'logo', 'abstract_file_sample', 'status', 'conference_tags_id', 'conference_types_id', 'country_id', 'state_id', 'city_id'];
+    protected $fillable = ['user_id', 'primary_color', 'secondary_color', 'domain', 'title', 'date', 'address', 'iframe', 'contact_number1', 'contact_number2', 'wp_number', 'email', 'logo', 'abstract_file_sample', 'brochure', 'status', 'conference_tags_id', 'conference_types_id', 'country_id', 'state_id', 'city_id'];
 
     public function getLogoAttribute($value)
     {
@@ -26,6 +26,16 @@ class Conference extends Model
         $host = request()->getSchemeAndHttpHost();
         if ($value) {
             return $host . '/file/abstractFileSample/' . $value;
+        } else {
+            return null;
+        }
+    }
+
+    public function getBrochureSampleAttribute($value)
+    {
+        $host = request()->getSchemeAndHttpHost();
+        if ($value) {
+            return $host . '/file/brochure/' . $value;
         } else {
             return null;
         }

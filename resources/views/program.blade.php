@@ -32,25 +32,37 @@
 @if(count($conferenceProgram) > 0)
 <section class="bg-midnight-blue background-position-left-bottom background-no-repeat sm-background-image-none" style="background-image: url('images/demo-conference-experts-bg.png')">
     <div class="container">
-        <div class="row align-items-center justify-content-center text-center mb-2" data-anime='{ "translateY": [50, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'>
-            <div class="col-lg-8">
-                <h2 class="alt-font text-white fw-500 ls-minus-2px"><span class="w-20px h-4px d-inline-block bg-base-color me-10px"></span>Conference Program</h2>
-            </div>
-        </div>
-        <div class="row row-cols-1 row-cols-lg-3 row-cols-sm-2 justify-content-center" data-anime='{ "el": "childs", "translateY": [30, 0], "translateX": [30, 0], "opacity": [0,1], "duration": 800, "delay": 100, "staggervalue": 200, "easing": "easeOutQuad" }'>
-            @foreach($conferenceProgram as $data)
-
-            <!-- start features box item -->
-            <div class="col icon-with-text-style-03">
-                <div class="feature-box p-10 sm-p-8">
-                    <div class="feature-box-content last-paragraph-no-margin">
-                        <span class="d-inline-block alt-font text-white fs-20 mb-5px">{{$data->title}}</span>
-                        <p class="w-90 md-w-100 mx-auto">{{$data->description}}.</p>
+        <div class="row">
+            <div class="col-lg-10 offset-xl-1 lg-ps-50px md-ps-15px" data-anime='{ "translateX": [0, 0], "opacity": [0,1], "duration": 600, "delay":150, "staggervalue": 150, "easing": "easeOutQuad" }'>
+                <div class="tab-content h-100">
+                    <!-- start tab content -->
+                    <div class="tab-pane fade in active show" id="tab_seven1">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="accordion accordion-style-02" id="accordion-style-01" data-active-icon="icon-feather-minus" data-inactive-icon="icon-feather-plus">
+                                    @foreach($conferenceProgram as $data)
+                                    <!-- start accordion item -->
+                                    <div class="accordion-item active-accordion">
+                                        <div class="accordion-header border-bottom border-color-extra-medium-gray pt-0">
+                                            <div class="accordion-title mb-0 position-relative text-dark-gray">
+                                               <span class="d-inline-block alt-font text-white fs-20 mb-5px">{{$data->title}}</span>
+                                            </div>
+                                        </div>
+                                        <div id="accordion-style-01-01" class="accordion-collapse collapse show" data-bs-parent="#accordion-style-01">
+                                            <div class="accordion-body last-paragraph-no-margin border-bottom border-color-light-medium-gray">
+                                                <p class="w-90 md-w-100 mx-auto">{{$data->description}}.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end accordion item -->
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    <!-- end tab content -->
                 </div>
             </div>
-            @endforeach
-            <!-- end features box item -->
         </div>
     </div>
 </section>

@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('title', 20);
             $table->string('name', 20);
             $table->string('email', 80);
-            $table->string('alternative_email', 80);
+            $table->string('alternative_email', 80)->nullable();
             $table->string('phone_number', 20);
-            $table->string('whatsapp_number', 20);
+            $table->string('whatsapp_number', 20)->nullable();
             $table->string('institution', 50);
             $table->unsignedBigInteger('country_id');
             $table->foreign('country_id')->references('id')->on('countries');

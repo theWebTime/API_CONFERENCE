@@ -26,5 +26,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CitiesTableChunkThreeSeeder::class);
         $this->call(CitiesTableChunkFourSeeder::class);
         $this->call(CitiesTableChunkFiveSeeder::class);
+        $this->call(ConferenceImportantDateCategorySeeder::class);
     }
 }

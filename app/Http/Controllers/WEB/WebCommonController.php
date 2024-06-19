@@ -16,11 +16,14 @@ use App\Models\ConferenceProgram;
 use App\Models\ConferenceFaq;
 use App\Models\ConferencePlan;
 use App\Models\ConferencePayment;
+use App\Models\ConferenceOtherInformation;
+use App\Models\ConferenceSchedule;
 use App\Models\Country;
 use App\Models\City;
 use Mail;
 use App\Mail\RegisterMailConference;
 use App\Mail\ContactUsMailConference;
+use App\Mail\PaymentReceiptMail;
 use App\Mail\SubmitAbstractMailConference;
 use App\Models\Register;
 use App\Models\FiledContactUs;
@@ -47,7 +50,24 @@ class WebCommonController extends Controller
             $conferenceProgram = ConferenceProgram::where('conferences_id', $conference->id)->get();
             $conferenceTestimonial = ConferenceTestimonial::where('conferences_id', $conference->id)->get();
             $conferenceSpeaker = ConferenceSpeaker::where('conferences_id', $conference->id)->orderBy('id', 'DESC')->limit(4)->get();
-            return view('welcome', compact('conference', 'conferenceCommittee', 'conferenceTestimonial', 'conferenceSpeaker', 'conferenceAboutUs', 'conferenceGallery', 'conferenceMediaPartner', 'conferenceProgram'));
+            // $conferenceSchedule = ConferenceSchedule::where('conferences_id', $conference->id)->first();
+            $confScheduleData = ConferenceSchedule::where('conferences_id', $conference->id)
+                ->select('id', 'title', 'date', 'data')
+                ->first();
+            // Check if data exists
+            if (is_null($confScheduleData)) {
+                return $this->sendError('Data not found.');
+            }
+            // Decode the JSON data
+            $decodedData = json_decode($confScheduleData->data, true);
+            // Prepare the response data
+            $conferenceScheduleData = [
+                'id' => $confScheduleData->id,
+                'title' => $confScheduleData->title,
+                'date' => $confScheduleData->date,
+                'data' => $decodedData,
+            ];
+            return view('welcome', compact('conference', 'conferenceCommittee', 'conferenceTestimonial', 'conferenceSpeaker', 'conferenceAboutUs', 'conferenceGallery', 'conferenceMediaPartner', 'conferenceProgram', 'conferenceScheduleData'));
         } catch (Exception $e) {
             return $this->sendError('something went wrong!', $e);
         }
@@ -98,6 +118,21 @@ class WebCommonController extends Controller
             return $this->sendError('something went wrong!', $e);
         }
     }
+    /* public function conferenceSchedule()
+    {
+        try {
+            if (env('APP_ENV') == 'production') {
+                $domain = Request::getHost();
+            } else {
+                $domain = 'https://www.instagram.com/';
+            }
+            $conference = Conference::where('domain', $domain)->first();
+            $conferenceSchedule = ConferenceSchedule::where('conferences_id', $conference->id)->get();
+            return view('guideline', compact('conferenceSchedule'));
+        } catch (Exception $e) {
+            return $this->sendError('something went wrong!', $e);
+        }
+    } */
     public function gallery()
     {
         try {
@@ -124,6 +159,37 @@ class WebCommonController extends Controller
             $conference = Conference::where('domain', $domain)->first();
             $conferenceAboutUs = ConferenceAboutUs::where('conferences_id', $conference->id)->first();
             return view('about-us', compact('conferenceAboutUs'));
+        } catch (Exception $e) {
+            return $this->sendError('something went wrong!', $e);
+        }
+    }
+    public function venueDetail()
+    {
+        try {
+            if (env('APP_ENV') == 'production') {
+                $domain = Request::getHost();
+            } else {
+                $domain = 'https://www.instagram.com/';
+            }
+            $conference = Conference::where('domain', $domain)->first();
+            $conferenceOtherInformation = ConferenceOtherInformation::where('conferences_id', $conference->id)->first();
+            return view('venue-detail', compact('conferenceOtherInformation'));
+        } catch (Exception $e) {
+            return $this->sendError('something went wrong!', $e);
+        }
+    }
+
+    public function guideline()
+    {
+        try {
+            if (env('APP_ENV') == 'production') {
+                $domain = Request::getHost();
+            } else {
+                $domain = 'https://www.instagram.com/';
+            }
+            $conference = Conference::where('domain', $domain)->first();
+            $conferenceOtherInformation = ConferenceOtherInformation::where('conferences_id', $conference->id)->first();
+            return view('guideline', compact('conferenceOtherInformation'));
         } catch (Exception $e) {
             return $this->sendError('something went wrong!', $e);
         }
@@ -255,9 +321,17 @@ class WebCommonController extends Controller
             $session = \Stripe\Checkout\Session::retrieve($sessionId);
 
             $transactionId = $session->id;
-            
+            $amount = $session->amount_total; // Amount in cents
+            $conferenceName = 'Your Conference Name'; // You might want to fetch this from your database
+            $planName = 'Your Plan Name'; // You might want to fetch this from your database
+            $date = now()->toDateString(); // The date of the payment
+
             // Assuming 'status' is 1 by default and needs to be updated to 2 on success
             ConferencePayment::where('transaction_id', $transactionId)->update(['status' => 2]);
+
+            // Send the receipt email
+            $userEmail = $session->customer_details->email;
+            Mail::to($userEmail)->send(new PaymentReceiptMail($transactionId, $amount, $conferenceName, $planName, $date));
 
             return redirect()->route('register')->with('success', 'Payment Successfully done!');
         } catch (Exception $e) {

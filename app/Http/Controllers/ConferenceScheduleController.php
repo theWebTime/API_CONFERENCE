@@ -22,7 +22,7 @@ class ConferenceScheduleController extends BaseController
             if ($validator->fails()) {
                 return $this->sendError('Validation Error.', $validator->errors());
             }
-            $data = ConferenceSchedule::where('conferences_id', $request->input('id'))->select('id', 'data', 'date')->orderBy('id', 'DESC')->paginate($request->itemsPerPage ?? 10);
+            $data = ConferenceSchedule::where('conferences_id', $request->input('id'))->select('id', 'title', 'date')->orderBy('id', 'DESC')->paginate($request->itemsPerPage ?? 10);
             return $this->sendResponse($data, 'Conference Schedule Data retrieved successfully.');
         } catch (Exception $e) {
             return $this->sendError('something went wrong!', $e);
@@ -35,21 +35,86 @@ class ConferenceScheduleController extends BaseController
         try {
             $input = $request->all();
             $validator = Validator::make($input, [
-                'date' => 'required|max:30',
-                'data' => 'required|mimes:jpg,jpeg,png,bmp,mp4|max:20000',
+                'title' => 'required|max:20',
+                'date' => 'required|max:20',
+                'data' => 'required|array',
+                'data.*.title' => 'required|string',
+                'data.*.description' => 'required|string',
                 'conference_id' => 'required|exists:conferences,id',
             ]);
             if ($validator->fails()) {
                 return $this->sendError('Validation Error.', $validator->errors());
             }
-            $updateData = (['conferences_id' => $request->input('conference_id'), 'date' => $input['date']]);
-            if ($request->file('data')) {
-                $file = $request->file('data');
-                $filename = time() . $file->getClientOriginalName();
-                $file->move(public_path('images/conferenceSchedule'), $filename);
-                $updateData['data'] = $filename;
-            }
+            $jsonData = json_encode($input['data']);
+            $updateData = (['conferences_id' => $request->input('conference_id'), 'title' => $input['title'], 'date' => $input['date'], 'data' => $jsonData]);
             ConferenceSchedule::insert($updateData);
+            return $this->sendResponse([], 'Conference Schedule created successfully.');
+        } catch (Exception $e) {
+            return $this->sendError('something went wrong!', $e);
+        }
+    }
+
+    public function show(Request $request)
+    {
+        try {
+            $input = $request->all();
+            $validator = Validator::make($input, [
+                'id' => 'required',
+            ]);
+            if ($validator->fails()) {
+                return $this->sendError('Validation Error.', $validator->errors());
+            }
+
+            // Retrieve the conference schedule data
+            $confScheduleData = ConferenceSchedule::where('conferences_id', $request->input('id'))
+                ->select('id', 'title', 'date', 'data')
+                ->first();
+
+            // Check if data exists
+            if (is_null($confScheduleData)) {
+                return $this->sendError('Data not found.');
+            }
+
+            // Decode the JSON data
+            $decodedData = json_decode($confScheduleData->data, true);
+
+            // Prepare the response data
+            $data = [
+                'id' => $confScheduleData->id,
+                'title' => $confScheduleData->title,
+                'date' => $confScheduleData->date,
+                'data' => $decodedData,
+            ];
+
+            return $this->sendResponse($data, 'Conference Schedule retrieved successfully.');
+        } catch (Exception $e) {
+            return $this->sendError('Something went wrong!', $e->getMessage());
+        }
+    }
+
+
+    public function update(Request $request)
+    {
+        //Using Try & Catch For Error Handling
+        try {
+            $input = $request->all();
+            $validator = Validator::make($input, [
+                'title' => 'required|max:20',
+                'date' => 'required|max:20',
+                'data' => 'required|array',
+                'data.*.title' => 'required|string',
+                'data.*.description' => 'required|string',
+                'conference_id' => 'required|exists:conferences,id',
+            ]);
+            if ($validator->fails()) {
+                return $this->sendError('Validation Error.', $validator->errors());
+            }
+            $jsonData = json_encode($input['data']);
+            $conferenceSchedule = ConferenceSchedule::where('conferences_id', $request->input('conference_id'))->first();
+            if (is_null($conferenceSchedule)) {
+                return $this->sendError('Data not found.');
+            }
+            $conferenceSchedule->update(['title' => $input['title'], 'date' => $input['date'], 'data' => $jsonData]);
             return $this->sendResponse([], 'Conference Schedule created successfully.');
         } catch (Exception $e) {
             return $this->sendError('something went wrong!', $e);

@@ -127,7 +127,63 @@
     </div>
 </section>
 <!-- end section -->
+ <!-- start section -->
+  <div class="container">
+    @if($conferenceScheduleData)
+        <section class="bg-midnight-blue pt-0 sm-pt-50px">
+            <div class="container">
+                <div class="col time-schedule text-center">
+                    <span class="btn btn-base-color btn-small btn-round-edge bg-base-color text-white d-inline-block d-md-none mb-15px mx-auto">
+                        <i class="feather icon-feather-arrow-left align-middle icon-extra-medium m-0 me-5px"></i>
+                        Drag to scroll see more
+                        <i class="feather icon-feather-arrow-right align-middle icon-extra-medium m-0 ms-5px"></i>
+                    </span>
+                    <div class="time-schedule-scroll">
+                        <div class="time-schedule-min-width">
+                            <!-- start time table title -->
+                            <div class="time-table bg-dark-midnight-blue fs-18">
+                                <div class="time-table-box day border border-color-transparent-white-light">
+                                    <div class="inner-box">
+                                        <span class="text-white">Time</span>
+                                    </div>
+                                </div>
+                                @foreach($conferenceScheduleData['data'] as $item)
+                                    <div class="time-table-box day border border-color-transparent-white-light">
+                                        <div class="inner-box">
+                                            <span class="text-white">{{ $item['title'] }}</span>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <!-- end time table title -->
+                            <!-- start time table content -->
+                            <div class="time-table">
+                                <div class="time-table-box name-box border border-color-transparent-white-light">
+                                    <div class="inner-box">
+                                        <div>09:00 - 10:00 AM</div>
+                                    </div>
+                                </div>
+                                @foreach($conferenceScheduleData['data'] as $item)
+                                    <div class="time-table-box name-box border border-color-transparent-white-light">
+                                        <div class="inner-box">
+                                            <div class="text-white">{{ $item['description'] }}</div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <!-- end time table content -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    @else
+        <p>No conference schedule available.</p>
+    @endif
+</div>
+        <!-- end section --> 
 <!-- start section -->
+@if($conferenceAboutUs)
 <section class="bg-dark-midnight-blue background-position-right-top background-no-repeat md-background-image-none" style="background-image: url('images/demo-conference-about-bg.png')">
     <div class="container-fluid d-none d-md-block">
         <div class="row">
@@ -170,7 +226,7 @@
                         <div class="feature-box-content">
                             <span class="d-inline-block alt-font text-white fs-20">{{$conferenceAboutUs->title}}</span>
                         </div>
-                        <div class="mt-10px w-100">{{$conferenceAboutUs->description}}</div>
+                        <div class="mt-10px w-100">{!! $conferenceAboutUs->description !!}</div>
                     </div>
                 </div>
                 <!-- end features box item -->
@@ -184,6 +240,7 @@
         </div>
     </div>
 </section>
+@endif
 <!-- end section -->
 <!-- start section of Conference Committee Member-->
 @if(count($conferenceCommittee) > 0)
@@ -570,33 +627,37 @@
 @if(count($conferenceProgram) > 0)
 <section class="bg-midnight-blue background-position-left-bottom background-no-repeat sm-background-image-none" style="background-image: url('images/demo-conference-experts-bg.png')">
     <div class="container">
-        <div class="row align-items-center justify-content-center text-center mb-2" data-anime='{ "translateY": [50, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'>
-            <div class="col-lg-8">
-                <h2 class="alt-font text-white fw-500 ls-minus-2px"><span class="w-20px h-4px d-inline-block bg-base-color me-10px"></span>Conference Program</h2>
-            </div>
-        </div>
-        <div class="row row-cols-1 row-cols-lg-3 row-cols-sm-2 justify-content-center" data-anime='{ "el": "childs", "translateY": [30, 0], "translateX": [30, 0], "opacity": [0,1], "duration": 800, "delay": 100, "staggervalue": 200, "easing": "easeOutQuad" }'>
-            @foreach($conferenceProgram as $data)
-
-            <!-- start features box item -->
-            <div class="col icon-with-text-style-03">
-                <div class="feature-box p-10 sm-p-8">
-                    <div class="feature-box-content last-paragraph-no-margin">
-                        <span class="d-inline-block alt-font text-white fs-20 mb-5px">{{$data->title}}</span>
-                        <p class="w-90 md-w-100 mx-auto">{{$data->description}}.</p>
+        <div class="row">
+            <div class="col-lg-10 offset-xl-1 lg-ps-50px md-ps-15px" data-anime='{ "translateX": [0, 0], "opacity": [0,1], "duration": 600, "delay":150, "staggervalue": 150, "easing": "easeOutQuad" }'>
+                <div class="tab-content h-100">
+                    <!-- start tab content -->
+                    <div class="tab-pane fade in active show" id="tab_seven1">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="accordion accordion-style-02" id="accordion-style-01" data-active-icon="icon-feather-minus" data-inactive-icon="icon-feather-plus">
+                                    @foreach($conferenceProgram as $data)
+                                    <!-- start accordion item -->
+                                    <div class="accordion-item active-accordion">
+                                        <div class="accordion-header border-bottom border-color-extra-medium-gray pt-0">
+                                            <div class="accordion-title mb-0 position-relative text-dark-gray">
+                                               <span class="d-inline-block alt-font text-white fs-20 mb-5px">{{$data->title}}</span>
+                                            </div>
+                                        </div>
+                                        <div id="accordion-style-01-01" class="accordion-collapse collapse show" data-bs-parent="#accordion-style-01">
+                                            <div class="accordion-body last-paragraph-no-margin border-bottom border-color-light-medium-gray">
+                                                <p class="w-90 md-w-100 mx-auto">{!! $data->description !!}.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end accordion item -->
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    <!-- end tab content -->
                 </div>
             </div>
-            @endforeach
-            <!-- end features box item -->
-        </div>
-        <div class="text-center mt-4">
-            <a href="{{route('program')}}" class="btn btn-extra-large btn-base-color btn-hover-animation btn-rounded btn-box-shadow align-self-center lg-mt-20px sm-mt-5px xs-mt-20px" data-anime='{ "opacity": [0, 1], "translateY": [50, 0], "easing": "easeOutCubic", "duration": 1000, "delay": 800 }'>
-                <span>
-                    <span class="btn-text">Show All</span>
-                    <span class="btn-icon"><i class="fa-solid fa-arrow-right"></i></span>
-                </span>
-            </a>
         </div>
     </div>
 </section>

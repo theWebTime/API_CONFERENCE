@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('conferences_id');
             $table->foreign('conferences_id')->references('id')->on('conferences');
-            $table->integer('category'); //(1.Conference Dates 2.Abstract Deadline 3.Registrations Deadline)
+            $table->unsignedBigInteger('categories_id');
+            $table->foreign('categories_id')->references('id')->on('conference_important_date_categories');
             $table->string('title', 20);
             $table->string('date', 20);
             $table->timestamps();

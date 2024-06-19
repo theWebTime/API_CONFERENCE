@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('conference_schedules', function (Blueprint $table) {
+        Schema::create('conference_important_date_categories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('conferences_id');
-            $table->foreign('conferences_id')->references('id')->on('conferences');
-            $table->string('title', 20);
-            $table->string('date', 20);
-            $table->json('data')->nullable();
+            $table->string('category_title', 30);
             $table->timestamps();
         });
     }
@@ -27,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('conference_schedules');
+        Schema::dropIfExists('conference_important_date_categories');
     }
 };

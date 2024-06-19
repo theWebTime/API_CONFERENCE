@@ -125,6 +125,8 @@ Route::group(['middleware' => ['auth:api', 'checkRole:admin,conferenceOwner']], 
     Route::group(['prefix' => '/conference-schedule'], function () {
         Route::post('/index', [ConferenceScheduleController::class, 'index']);
         Route::post('/store', [ConferenceScheduleController::class, 'store']);
+        Route::post('/show', [ConferenceScheduleController::class, 'show']);
+        Route::post('/update', [ConferenceScheduleController::class, 'update']);
         Route::post('/delete', [ConferenceScheduleController::class, 'delete']);
     });
     // Conference Gallery Routes

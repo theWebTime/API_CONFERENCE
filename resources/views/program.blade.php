@@ -50,7 +50,7 @@
                                         </div>
                                         <div id="accordion-style-01-01" class="accordion-collapse collapse show" data-bs-parent="#accordion-style-01">
                                             <div class="accordion-body last-paragraph-no-margin border-bottom border-color-light-medium-gray">
-                                                <p class="w-90 md-w-100 mx-auto">{{$data->description}}.</p>
+                                                <p class="w-90 md-w-100 mx-auto">{!! $data->description !!}.</p>
                                             </div>
                                         </div>
                                     </div>

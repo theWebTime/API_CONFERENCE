@@ -17,44 +17,51 @@
     </div>
 </section>
 <!-- end page title -->
-<!-- start section -->
-@if(count($conferenceFaq) > 0)
-<section class="bg-dark-midnight-blue background-position-right-top background-no-repeat md-background-image-none" style="background-image: url('images/demo-conference-about-bg.png')">
-    <div class="container">
+  <!-- start section -->
+<section class="bg-midnight-blue pt-0 half-section d-none d-md-block">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-10 offset-xl-1 lg-ps-50px md-ps-15px" data-anime='{ "translateX": [0, 0], "opacity": [0,1], "duration": 600, "delay":150, "staggervalue": 150, "easing": "easeOutQuad" }'>
-                <div class="tab-content h-100">
-                    <!-- start tab content -->
-                    <div class="tab-pane fade in active show" id="tab_seven1">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="accordion accordion-style-02" id="accordion-style-01" data-active-icon="icon-feather-minus" data-inactive-icon="icon-feather-plus">
-                                    @foreach($conferenceFaq as $data)
-                                    <!-- start accordion item -->
-                                    <div class="accordion-item active-accordion">
-                                        <div class="accordion-header border-bottom border-color-extra-medium-gray pt-0">
-                                            <div class="accordion-title mb-0 position-relative text-dark-gray">
-                                                <i class="feather icon-feather-minus"></i><span class="fw-500 fs-18">{{$data->question}}</span>
-                                            </div>
-                                        </div>
-                                        <div id="accordion-style-01-01" class="accordion-collapse collapse show" data-bs-parent="#accordion-style-01">
-                                            <div class="accordion-body last-paragraph-no-margin border-bottom border-color-light-medium-gray">
-                                                <p>{{$data->answer}}.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end accordion item -->
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end tab content -->
-                </div>
+            <div class="p-0 overlap-section text-start ps-7" data-anime='{ "opacity": [0, 1], "translateY": [50, 0], "delay": 1000, "duration": 600, "easing": "easeOutQuad" }'>
+                <img src="images/demo-conference-02.png" alt="" class="animation-rotation">
             </div>
         </div>
     </div>
 </section>
-@endif
 <!-- end section -->
+@if(count($conferenceFaq) > 0)
+ <!-- start section -->
+ <section class="bg-dark-midnight-blue border-bottom border-color-transparent-white-light">
+            <div class="container"> 
+                <div class="row align-items-center">
+                    <div class="col-lg-10 offset-xl-1 lg-ps-50px md-ps-15px" data-anime='{ "el": "childs", "translateY": [50, 0], "opacity": [0,1], "duration": 600, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'>
+                        <div class="row justify-content-center">
+                            <div class="col-12">
+                                <div class="accordion accordion-style-02" id="accordion-style-02" data-active-icon="icon-feather-minus" data-inactive-icon="icon-feather-plus">
+                                @foreach($conferenceFaq as $data)
+                                    <!-- start accordion item -->
+                                    <div class="accordion-item active-accordion">
+                                        <div class="accordion-header border-bottom border-color-transparent-white-light">
+                                            <a href="" data-bs-toggle="collapse" data-bs-target="#accordion-style-02-01" aria-expanded="true" data-bs-parent="#accordion-style-02">
+                                                <div class="accordion-title mb-0 position-relative">
+                                                    <i class="feather icon-feather-minus body-text-color"></i><span class="fs-18 text-white">{{$data->question}}</span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div id="accordion-style-02-01" class="accordion-collapse collapse show" data-bs-parent="#accordion-style-02">
+                                            <div class="accordion-body last-paragraph-no-margin border-bottom border-color-transparent-white-light text-medium-gray">
+                                                <p>{{$data->answer}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end accordion item -->
+                                     @endforeach
+                                </div>
+                            </div>
+                        </div> 
+                    </div> 
+                </div> 
+            </div>
+        </section>
+        <!-- end section --> 
+         @endif
 @endsection

@@ -9,5 +9,5 @@ class ConferenceImportantDate extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['conferences_id', 'category', 'title', 'date'];
+    protected $fillable = ['conferences_id', 'categories_id', 'title', 'date'];
 }
